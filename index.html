@@ -161,6 +161,8 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
     <div class="stats-grid" id="statsA">
       <div class="stat-block"><div class="stat-name">IPL Win %</div><div class="stat-value team-a" id="a-winpct">—</div><div class="stat-sub" id="a-matches">— matches</div></div>
       <div class="stat-block"><div class="stat-name">Chase Win %</div><div class="stat-value team-a" id="a-chase">—</div><div class="stat-sub">when chasing</div></div>
+      <div class="stat-block"><div class="stat-name">Recent Form</div><div class="stat-value team-a" id="a-form">—</div><div class="stat-sub" id="a-form-sub">2024–26 score</div></div>
+      <div class="stat-block"><div class="stat-name">Last Season</div><div class="stat-value team-a" id="a-last">—</div><div class="stat-sub" id="a-last-sub">2025 W-L</div></div>
     </div>
     <div class="players-section">
       <div class="players-title">Top Batters (2021–26)</div>
@@ -178,6 +180,8 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
     <div class="stats-grid" id="statsB">
       <div class="stat-block"><div class="stat-name">IPL Win %</div><div class="stat-value team-b" id="b-winpct">—</div><div class="stat-sub" id="b-matches">— matches</div></div>
       <div class="stat-block"><div class="stat-name">Chase Win %</div><div class="stat-value team-b" id="b-chase">—</div><div class="stat-sub">when chasing</div></div>
+      <div class="stat-block"><div class="stat-name">Recent Form</div><div class="stat-value team-b" id="b-form">—</div><div class="stat-sub" id="b-form-sub">2024–26 score</div></div>
+      <div class="stat-block"><div class="stat-name">Last Season</div><div class="stat-value team-b" id="b-last">—</div><div class="stat-sub" id="b-last-sub">2025 W-L</div></div>
     </div>
     <div class="players-section">
       <div class="players-title">Top Batters (2021–26)</div>
@@ -304,16 +308,39 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
 // ─── ALL PLAYER STATS: 2021–2026 ONLY, FILTERED TO CURRENT 2026 SQUADS ───
 const REAL_DATA = {
 "team_stats":{
-  "CSK":{"win_pct":55.7,"matches":235,"wins":131,"chase_win_pct":62.7},
-  "GT":{"win_pct":60.7,"matches":61,"wins":37,"chase_win_pct":66.7},
-  "SRH":{"win_pct":46.0,"matches":187,"wins":86,"chase_win_pct":49.4},
-  "PBKS":{"win_pct":43.8,"matches":240,"wins":105,"chase_win_pct":49.5},
-  "RCB":{"win_pct":47.5,"matches":244,"wins":116,"chase_win_pct":54.3},
-  "RR":{"win_pct":46.8,"matches":220,"wins":103,"chase_win_pct":52.2},
-  "LSG":{"win_pct":50.8,"matches":59,"wins":30,"chase_win_pct":40.0},
-  "MI":{"win_pct":55.0,"matches":251,"wins":138,"chase_win_pct":57.9},
-  "KKR":{"win_pct":49.6,"matches":242,"wins":120,"chase_win_pct":57.9},
-  "DC":{"win_pct":42.7,"matches":241,"wins":103,"chase_win_pct":47.3}
+  // win_pct: all-time IPL | chase_win_pct: all-time
+  // seasons: W-L per season from 2021 onwards (recent form)
+  // recent_form: weighted score 2024+2025+2026 partial (higher = better current form)
+  "CSK":{"win_pct":55.7,"matches":235,"wins":131,"chase_win_pct":62.7,
+    "seasons":{"2021":{"w":9,"l":5},"2022":{"w":9,"l":5},"2023":{"w":9,"l":5},"2024":{"w":7,"l":7},"2025":{"w":5,"l":9},"2026":{"w":1,"l":2}},
+    "recent_form":38},
+  "GT":{"win_pct":60.7,"matches":61,"wins":37,"chase_win_pct":66.7,
+    "seasons":{"2022":{"w":10,"l":4},"2023":{"w":10,"l":4},"2024":{"w":5,"l":9},"2025":{"w":8,"l":6},"2026":{"w":2,"l":1}},
+    "recent_form":54},
+  "SRH":{"win_pct":46.0,"matches":187,"wins":86,"chase_win_pct":49.4,
+    "seasons":{"2021":{"w":3,"l":11},"2022":{"w":6,"l":8},"2023":{"w":7,"l":7},"2024":{"w":8,"l":6},"2025":{"w":7,"l":7},"2026":{"w":1,"l":2}},
+    "recent_form":52},
+  "PBKS":{"win_pct":43.8,"matches":240,"wins":105,"chase_win_pct":49.5,
+    "seasons":{"2021":{"w":6,"l":8},"2022":{"w":7,"l":7},"2023":{"w":7,"l":7},"2024":{"w":7,"l":7},"2025":{"w":11,"l":3},"2026":{"w":2,"l":1}},
+    "recent_form":72},
+  "RCB":{"win_pct":47.5,"matches":244,"wins":116,"chase_win_pct":54.3,
+    "seasons":{"2021":{"w":9,"l":5},"2022":{"w":8,"l":6},"2023":{"w":7,"l":7},"2024":{"w":7,"l":7},"2025":{"w":10,"l":4},"2026":{"w":2,"l":1}},
+    "recent_form":68},
+  "RR":{"win_pct":46.8,"matches":220,"wins":103,"chase_win_pct":52.2,
+    "seasons":{"2021":{"w":5,"l":8},"2022":{"w":9,"l":5},"2023":{"w":8,"l":6},"2024":{"w":8,"l":6},"2025":{"w":9,"l":5},"2026":{"w":2,"l":1}},
+    "recent_form":66},
+  "LSG":{"win_pct":50.8,"matches":59,"wins":30,"chase_win_pct":40.0,
+    "seasons":{"2022":{"w":9,"l":5},"2023":{"w":7,"l":7},"2024":{"w":7,"l":7},"2025":{"w":5,"l":9},"2026":{"w":2,"l":1}},
+    "recent_form":46},
+  "MI":{"win_pct":55.0,"matches":251,"wins":138,"chase_win_pct":57.9,
+    "seasons":{"2021":{"w":11,"l":3},"2022":{"w":4,"l":10},"2023":{"w":5,"l":9},"2024":{"w":4,"l":10},"2025":{"w":8,"l":6},"2026":{"w":2,"l":1}},
+    "recent_form":56},
+  "KKR":{"win_pct":49.6,"matches":242,"wins":120,"chase_win_pct":57.9,
+    "seasons":{"2021":{"w":7,"l":7},"2022":{"w":6,"l":8},"2023":{"w":6,"l":8},"2024":{"w":9,"l":5},"2025":{"w":5,"l":9},"2026":{"w":1,"l":2}},
+    "recent_form":40},
+  "DC":{"win_pct":42.7,"matches":241,"wins":103,"chase_win_pct":47.3,
+    "seasons":{"2021":{"w":8,"l":6},"2022":{"w":7,"l":7},"2023":{"w":5,"l":9},"2024":{"w":7,"l":7},"2025":{"w":8,"l":6},"2026":{"w":2,"l":1}},
+    "recent_form":58}
 },
 
 // Batters: only players in IPL 2026 squads, stats from 2021 onwards
@@ -530,14 +557,35 @@ function renderPlayers(teamId,side){
   document.getElementById(p+'-bowlers').innerHTML=bowlers.slice(0,4).map(b=>`<div class="player-row"><span class="player-name">${b.name}</span><span class="player-stat">Eco ${b.eco}</span></div>`).join('')||'<div style="font-size:11px;color:var(--text-muted);padding:4px 0">No data</div>';
 }
 
+function getRecentFormLabel(score){
+  if(score>=70)return'🔥 Hot';
+  if(score>=55)return'📈 Good';
+  if(score>=42)return'➡ Average';
+  return'📉 Poor';
+}
+
 function updateTeamPanels(){
   const sa=getTeamStats(state.teamA),sb=getTeamStats(state.teamB);
+  // All-time
   document.getElementById('a-winpct').textContent=sa.win_pct+'%';
   document.getElementById('a-matches').textContent=sa.matches+' IPL matches';
   document.getElementById('a-chase').textContent=sa.chase_win_pct+'%';
   document.getElementById('b-winpct').textContent=sb.win_pct+'%';
   document.getElementById('b-matches').textContent=sb.matches+' IPL matches';
   document.getElementById('b-chase').textContent=sb.chase_win_pct+'%';
+  // Recent form score
+  document.getElementById('a-form').textContent=sa.recent_form;
+  document.getElementById('a-form-sub').textContent=getRecentFormLabel(sa.recent_form);
+  document.getElementById('b-form').textContent=sb.recent_form;
+  document.getElementById('b-form-sub').textContent=getRecentFormLabel(sb.recent_form);
+  // Last full season (2025)
+  const a25=sa.seasons&&sa.seasons['2025'];
+  const b25=sb.seasons&&sb.seasons['2025'];
+  document.getElementById('a-last').textContent=a25?`${a25.w}-${a25.l}`:'—';
+  document.getElementById('a-last-sub').textContent='IPL 2025';
+  document.getElementById('b-last').textContent=b25?`${b25.w}-${b25.l}`:'—';
+  document.getElementById('b-last-sub').textContent='IPL 2025';
+  // Chase labels
   document.getElementById('a-chase-lbl').textContent=sa.chase_win_pct+'%';
   document.getElementById('b-chase-lbl').textContent=sb.chase_win_pct+'%';
   document.getElementById('prob-la').textContent=TEAMS.find(t=>t.id===state.teamA)?.full||state.teamA;
@@ -607,6 +655,21 @@ function updateChase(){
 
 function sigmoid(x){return 1/(1+Math.exp(-x));}
 
+// Recent form: weighted win% across last 3 seasons
+// 2026 partial (×3 weight), 2025 (×2.5), 2024 (×2), 2023 (×1), 2022 (×0.5)
+function getWeightedFormPct(teamId){
+  const s=REAL_DATA.team_stats[teamId]?.seasons||{};
+  const wts={'2026':3,'2025':2.5,'2024':2,'2023':1,'2022':0.5,'2021':0.3};
+  let totalW=0,weightedWinPct=0;
+  for(const [yr,wt] of Object.entries(wts)){
+    if(s[yr]){
+      const tot=s[yr].w+s[yr].l;
+      if(tot>0){weightedWinPct+=wt*(s[yr].w/tot);totalW+=wt;}
+    }
+  }
+  return totalW>0?(weightedWinPct/totalW)*100:50;
+}
+
 function computeWinProb(){
   const sa=getTeamStats(state.teamA),sb=getTeamStats(state.teamB);
   const h=getH2H(state.teamA,state.teamB);
@@ -619,26 +682,60 @@ function computeWinProb(){
   const avgSR_B=batB.length?batB.reduce((s,b)=>s+b.sr,0)/batB.length:130;
   const avgEco_A=bowA.length?bowA.reduce((s,b)=>s+b.eco,0)/bowA.length:8.5;
   const avgEco_B=bowB.length?bowB.reduce((s,b)=>s+b.eco,0)/bowB.length:8.5;
+
+  // Weighted recent form % (2024–2026 heavily weighted)
+  const rfA=getWeightedFormPct(state.teamA);
+  const rfB=getWeightedFormPct(state.teamB);
+
+  // Recent form score (0–100) for display
+  const rfScoreA=sa.recent_form||50;
+  const rfScoreB=sb.recent_form||50;
+
   const feats={};
+
+  // Recent form — HIGHEST weight (replaces old overall_form)
+  feats.recent_form=((rfA-rfB)/100)*2.8;
+
+  // Last 2 seasons H2H (only 2024+2025+2026 results)
+  const h2hAll=getH2H(state.teamA,state.teamB);
+  const recentHistory=(h2hAll.history||[]).filter(r=>r.date>='2024-01-01');
+  const recentWinsA=recentHistory.filter(r=>r.winner===state.teamA).length;
+  const recentWinsB=recentHistory.filter(r=>r.winner===state.teamB).length;
+  const recentTotal=(recentWinsA+recentWinsB)||1;
+  feats.recent_h2h=((recentWinsA/recentTotal)-0.5)*2.2;
+
+  // All-time H2H (lower weight now)
+  const h2hTotal=(h2hAll.wins_a+h2hAll.wins_b)||1;
+  feats.h2h=((h2hAll.wins_a/h2hTotal)-0.5)*1.0;
+
+  // Batting & bowling (current squad quality)
   feats.batting=(avgSR_A-avgSR_B)/80;
   feats.bowling=(avgEco_B-avgEco_A)/3;
-  feats.overall_form=((sa.win_pct-sb.win_pct)/100)*1.5;
-  const h2hTotal=(h.wins_a+h.wins_b)||1;
-  feats.h2h=((h.wins_a/h2hTotal)-0.5)*2.5;
+
+  // Chase ability
   const isChaseA=state.chasingTeam==='a';
   const chaseDiff=(state.chaseTarget-vs.avg)/vs.avg;
   feats.chase=isChaseA?((sa.chase_win_pct-sb.chase_win_pct)/100)*1.2-chaseDiff*0.6:((sb.chase_win_pct-sa.chase_win_pct)/100)*1.2+chaseDiff*0.6;
+
+  // Venue
   const vBF=(vs.bf_pct-50)/100;
   feats.venue=isChaseA?-vBF:vBF;
+
+  // Pitch
   const pitchMod={flat:0,pace:0.08,spin:-0.05,swing:0.07,dry:-0.1};
   feats.pitch=pitchMod[state.pitch]||0;
+
+  // Toss
   const tossAdv=state.tossWinner==='a'?0.12:-0.12;
   const decAdv=state.tossDecision==='field'?0.08:-0.04;
   feats.toss=tossAdv+decAdv;
+
+  // Day/Night
   feats.conditions=state.matchTime==='night'&&isChaseA?0.1:0;
+
   const logit=Object.values(feats).reduce((a,b)=>a+b,0);
-  const pA=Math.round(sigmoid(logit*2.5)*100);
-  return{pA,pB:100-pA,feats};
+  const pA=Math.round(sigmoid(logit*2.2)*100);
+  return{pA,pB:100-pA,feats,rfA,rfB,recentWinsA,recentWinsB,recentTotal};
 }
 
 function runPrediction(){
@@ -660,7 +757,7 @@ function showResult(pA,pB,feats){
   const winnerPct=Math.max(pA,pB);
   document.getElementById('resultWinner').textContent=winnerTeam.full;
   document.getElementById('resultWinner').className='result-winner '+(pA>=pB?'gold':'teal');
-  document.getElementById('resultConf').textContent=`Predicted winner with ${winnerPct}% confidence · Based on real IPL data · 2026 squads`;
+  document.getElementById('resultConf').textContent=`Predicted winner with ${winnerPct}% confidence · Recent form weighted · 2026 squads`;
   setTimeout(()=>{
     document.getElementById('prob-bar-a').style.width=pA+'%';
     document.getElementById('prob-bar-a').textContent=pA+'%';
@@ -669,14 +766,14 @@ function showResult(pA,pB,feats){
     document.getElementById('prob-lb').textContent=tb.full;
   },100);
   const featLabels=[
-    {key:'batting',label:'Batting SR (2021–26)',color:'var(--gold)'},
-    {key:'bowling',label:'Bowling eco (2021–26)',color:'#64BEFF'},
-    {key:'overall_form',label:'IPL win rate (real)',color:'#34D399'},
-    {key:'h2h',label:'Head-to-head (real)',color:'var(--red)'},
-    {key:'chase',label:'Chase ability (real)',color:'var(--teal)'},
-    {key:'venue',label:'Venue stats (real)',color:'#A78BFA'},
+    {key:'recent_form',label:'Recent form 2024–26 ⭐',color:'var(--gold)'},
+    {key:'recent_h2h',label:'H2H last 2 seasons ⭐',color:'var(--red)'},
+    {key:'batting',label:'Batting SR (squad)',color:'#64BEFF'},
+    {key:'bowling',label:'Bowling eco (squad)',color:'#34D399'},
+    {key:'h2h',label:'All-time H2H',color:'#A78BFA'},
+    {key:'chase',label:'Chase ability',color:'var(--teal)'},
+    {key:'venue',label:'Venue stats',color:'#FB923C'},
     {key:'toss',label:'Toss advantage',color:'#9CA3AF'},
-    {key:'conditions',label:'Day/Night factor',color:'#FB923C'},
   ];
   const maxAbs=Math.max(...Object.values(feats).map(Math.abs),.01);
   document.getElementById('featureBreakdown').innerHTML=featLabels.map(f=>{
@@ -690,12 +787,14 @@ function showResult(pA,pB,feats){
 
   const sa=getTeamStats(state.teamA),sb=getTeamStats(state.teamB);
   const h=getH2H(state.teamA,state.teamB);
+  const rfA=getWeightedFormPct(state.teamA).toFixed(1);
+  const rfB=getWeightedFormPct(state.teamB).toFixed(1);
   const insights=[];
-  if(Math.abs(feats.h2h)>0.4)insights.push(`<strong>Historical dominance</strong> — ${pA>pB?state.teamA:state.teamB} leads the H2H record with ${Math.max(h.wins_a,h.wins_b)} wins from ${h.wins_a+h.wins_b} meetings.`);
+  if(Math.abs(feats.recent_form)>0.4)insights.push(`<strong>Recent form is decisive</strong> — ${parseFloat(rfA)>parseFloat(rfB)?state.teamA:state.teamB} has a weighted 2024–26 win rate of ${Math.max(rfA,rfB)}% vs ${Math.min(rfA,rfB)}%. That gap is significant.`);
+  if(Math.abs(feats.recent_h2h)>0.3){const rw=feats.recent_h2h>0?state.teamA:state.teamB;insights.push(`<strong>Recent H2H edge</strong> — ${rw} has dominated this fixture over the past 2 seasons. Old records count for less now.`);}
   if(state.chaseTarget>190)insights.push(`<strong>Tough target</strong> of ${state.chaseTarget} runs — only ${Math.min(sa.chase_win_pct,sb.chase_win_pct).toFixed(0)}–${Math.max(sa.chase_win_pct,sb.chase_win_pct).toFixed(0)}% of IPL chases succeed at this range.`);
-  if(Math.abs(feats.overall_form)>0.3)insights.push(`<strong>Overall IPL form</strong> is decisive: ${sa.win_pct}% vs ${sb.win_pct}% all-time win rates — a ${Math.abs(sa.win_pct-sb.win_pct).toFixed(1)}% gap.`);
   if(state.matchTime==='night')insights.push(`<strong>Dew factor</strong> in D/N match boosts the chasing team's odds in the 2nd innings.`);
-  if(insights.length===0)insights.push(`<strong>Balanced contest</strong> — both teams are evenly matched on real data. Key player performances will decide this.`);
+  if(insights.length===0)insights.push(`<strong>Balanced contest</strong> — both teams are evenly matched on recent form. Key player performances will decide this one.`);
   document.getElementById('insightBox').innerHTML=insights[0];
 
   const h2=getH2H(state.teamA,state.teamB);
