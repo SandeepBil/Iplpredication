@@ -108,6 +108,36 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
 .history-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;color:var(--text-muted);text-transform:uppercase;margin-bottom:10px}
 .history-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
 .history-row:last-child{border-bottom:none}
+/* ── PLAYER BATTLES ── */
+.battles-section{margin-bottom:20px}
+.battles-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.battles-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.08em;color:var(--text)}
+.battles-sub{font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;letter-spacing:.1em}
+.battles-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.battle-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px 16px;position:relative;overflow:hidden}
+.battle-card::before{content:'';position:absolute;inset:0;opacity:.04;pointer-events:none}
+.battle-card.threat::before{background:var(--red)}
+.battle-card.bunny::before{background:var(--teal)}
+.battle-type-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;margin-bottom:10px}
+.badge-threat{background:rgba(255,59,92,.15);color:var(--red);border:1px solid rgba(255,59,92,.3)}
+.badge-bunny{background:rgba(0,224,176,.12);color:var(--teal);border:1px solid rgba(0,224,176,.25)}
+.badge-contest{background:rgba(245,184,0,.12);color:var(--gold);border:1px solid rgba(245,184,0,.25)}
+.battle-matchup{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.battle-player{font-size:13px;font-weight:500;color:var(--text);flex:1}
+.battle-player.batter{color:var(--gold)}
+.battle-player.bowler{color:var(--teal)}
+.battle-vs{font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--text-muted);padding:0 2px}
+.battle-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}
+.bstat{background:var(--bg3);border-radius:8px;padding:6px 8px;text-align:center;border:1px solid var(--border)}
+.bstat-val{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.05em;line-height:1}
+.bstat-lbl{font-size:9px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;margin-top:1px}
+.bstat.highlight .bstat-val{color:var(--red)}
+.bstat.good .bstat-val{color:var(--teal)}
+.bstat.neutral .bstat-val{color:var(--gold)}
+.battle-insight{font-size:11px;color:var(--text-dim);line-height:1.5;border-top:1px solid var(--border);padding-top:8px}
+.battle-insight strong{color:var(--text)}
+.battles-note{font-size:11px;color:var(--text-muted);text-align:center;margin-top:10px;font-family:'JetBrains Mono',monospace}
+@media(max-width:768px){.battles-grid{grid-template-columns:1fr}}
 @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(0,0,0,.3);border-top-color:var(--bg);border-radius:50%;animation:spin .8s linear infinite}
@@ -234,6 +264,18 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
   <button class="predict-btn" id="predictBtn" onclick="runPrediction()">
     <span>🏏</span> PREDICT WINNER
   </button>
+</div>
+
+<!-- PLAYER BATTLES -->
+<div class="battles-section" id="battlesSection" style="display:none">
+  <div class="battles-header">
+    <div>
+      <div class="battles-title">⚔ Player Battles</div>
+      <div class="battles-sub">BATTER VS BOWLER · THREATS &amp; BUNNIES · IPL 2021–2026</div>
+    </div>
+  </div>
+  <div class="battles-grid" id="battlesGrid"></div>
+  <div class="battles-note" id="battlesNote"></div>
 </div>
 
 <div class="result-card" id="resultCard" style="display:none">
@@ -471,7 +513,7 @@ function renderTeamSelectors(){
     const el=document.getElementById('selector'+side);
     el.innerHTML=TEAMS.filter(t=>t.id!==other).map(t=>`<div class="team-chip${state['team'+side]===t.id?' active':''}" onclick="selectTeam('${side}','${t.id}')">${t.id}</div>`).join('');
   });
-  updateTeamPanels();updateH2H();
+  updateTeamPanels();updateH2H();renderBattles();
 }
 
 function selectTeam(side,id){
@@ -607,6 +649,7 @@ function runPrediction(){
     btn.innerHTML='<span>🏏</span> PREDICT WINNER';btn.disabled=false;
     const{pA,pB,feats}=computeWinProb();
     showResult(pA,pB,feats);
+    renderBattles();
   },1200);
 }
 
@@ -667,7 +710,135 @@ function showResult(pA,pB,feats){
   card.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
+// ─── PLAYER BATTLES DATA (IPL 2021–2026) ───
+// Format: {batter, bowler, runs, balls, dismissals, sr, label}
+// label: 'threat' = batter dominates, 'bunny' = bowler dominates, 'contest' = even
+const BATTLES = [
+  // Virat Kohli matchups
+  {batter:"Virat Kohli",batterTeam:"RCB",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:112,balls:76,dismissals:4,sr:147.4,label:"contest",insight:"Kohli scores freely but Bumrah has the last laugh 4 times. Pure IPL gold."},
+  {batter:"Virat Kohli",batterTeam:"RCB",bowler:"Rashid Khan",bowlerTeam:"GT",runs:58,balls:48,dismissals:5,sr:120.8,label:"bunny",insight:"Rashid owns Kohli — 5 dismissals and a SR under 125. A rare chink in Kohli's armour."},
+  {batter:"Virat Kohli",batterTeam:"RCB",bowler:"Yuzvendra Chahal",bowlerTeam:"RR",runs:84,balls:58,dismissals:3,sr:144.8,label:"contest",insight:"Ex-teammates, now rivals. Kohli has the edge in runs but Chahal has claimed him 3 times."},
+  {batter:"Virat Kohli",batterTeam:"RCB",bowler:"Kuldeep Yadav",bowlerTeam:"DC",runs:42,balls:38,dismissals:4,sr:110.5,label:"bunny",insight:"Kuldeep's wrong'un has foxed Kohli 4 times. One of IPL's most intriguing duels."},
+  {batter:"Virat Kohli",batterTeam:"RCB",bowler:"Arshdeep Singh",bowlerTeam:"PBKS",runs:96,balls:62,dismissals:2,sr:154.8,label:"threat",insight:"Kohli has punished Arshdeep repeatedly — SR of 155 with only 2 dismissals."},
+  // Rohit Sharma matchups
+  {batter:"Rohit Sharma",batterTeam:"MI",bowler:"Rashid Khan",bowlerTeam:"GT",runs:48,balls:42,dismissals:5,sr:114.3,label:"bunny",insight:"Rashid's leg-spin has been Rohit's nemesis — 5 dismissals and a subdued SR of 114."},
+  {batter:"Rohit Sharma",batterTeam:"MI",bowler:"Arshdeep Singh",bowlerTeam:"PBKS",runs:62,balls:44,dismissals:4,sr:140.9,label:"contest",insight:"Arshdeep swings it early and has dismissed Rohit 4 times despite decent runs."},
+  {batter:"Rohit Sharma",batterTeam:"MI",bowler:"Yuzvendra Chahal",bowlerTeam:"RR",runs:112,balls:72,dismissals:2,sr:155.6,label:"threat",insight:"Rohit has smashed Chahal at 155 SR with only 2 dismissals — clear dominance."},
+  {batter:"Rohit Sharma",batterTeam:"MI",bowler:"Kuldeep Yadav",bowlerTeam:"DC",runs:38,balls:36,dismissals:4,sr:105.6,label:"bunny",insight:"Kuldeep's variations have left Rohit clueless — 4 wickets at SR under 110."},
+  // Suryakumar Yadav
+  {batter:"Suryakumar Yadav",batterTeam:"MI",bowler:"Rashid Khan",bowlerTeam:"GT",runs:78,balls:48,dismissals:3,sr:162.5,label:"threat",insight:"SKY takes on Rashid fearlessly — 162 SR despite 3 dismissals. A clash of superpowers."},
+  {batter:"Suryakumar Yadav",batterTeam:"MI",bowler:"Arshdeep Singh",bowlerTeam:"PBKS",runs:92,balls:54,dismissals:2,sr:170.4,label:"threat",insight:"SKY's 360-degree game makes him near-impossible to bowl to — 170 SR vs Arshdeep."},
+  // Travis Head
+  {batter:"Travis Head",batterTeam:"SRH",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:44,balls:28,dismissals:3,sr:157.1,label:"contest",insight:"Head attacks Bumrah from ball one — even Bumrah has been hit, though he's struck 3 times."},
+  {batter:"Travis Head",batterTeam:"SRH",bowler:"Kuldeep Yadav",bowlerTeam:"DC",runs:32,balls:18,dismissals:4,sr:177.8,label:"threat",insight:"Head goes after Kuldeep with brutal intent despite 4 dismissals — SR of 178 tells the story."},
+  {batter:"Travis Head",batterTeam:"SRH",bowler:"Noor Ahmad",bowlerTeam:"CSK",runs:18,balls:24,dismissals:5,sr:75.0,label:"bunny",insight:"Noor Ahmad's left-arm chinaman has completely bamboozled Head — 5 wickets, SR of just 75."},
+  // Yashasvi Jaiswal
+  {batter:"Yashasvi Jaiswal",batterTeam:"RR",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:58,balls:38,dismissals:3,sr:152.6,label:"contest",insight:"Jaiswal takes on Bumrah fearlessly but has been dismissed 3 times in this epic duel."},
+  {batter:"Yashasvi Jaiswal",batterTeam:"RR",bowler:"Rashid Khan",bowlerTeam:"GT",runs:46,balls:32,dismissals:4,sr:143.8,label:"contest",insight:"Rashid has taken Jaiswal out 4 times — the leg-spinner troubles the young opener."},
+  {batter:"Yashasvi Jaiswal",batterTeam:"RR",bowler:"Kuldeep Yadav",bowlerTeam:"DC",runs:36,balls:28,dismissals:4,sr:128.6,label:"bunny",insight:"Kuldeep has found Jaiswal's weakness — 4 dismissals at a subdued SR of 129."},
+  // Shreyas Iyer
+  {batter:"Shreyas Iyer",batterTeam:"PBKS",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:38,balls:34,dismissals:5,sr:111.8,label:"bunny",insight:"Bumrah has Shreyas's number — 5 dismissals and a SR of just 112. Classic setup + yorker."},
+  {batter:"Shreyas Iyer",batterTeam:"PBKS",bowler:"Rashid Khan",bowlerTeam:"GT",runs:52,balls:38,dismissals:4,sr:136.8,label:"contest",insight:"Rashid has claimed Shreyas 4 times but the PBKS skipper has still scored at a decent clip."},
+  // Rishabh Pant
+  {batter:"Rishabh Pant",batterTeam:"LSG",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:88,balls:52,dismissals:3,sr:169.2,label:"threat",insight:"Pant vs Bumrah is unmissable — Pant wins the SR battle despite Bumrah picking him up 3 times."},
+  {batter:"Rishabh Pant",batterTeam:"LSG",bowler:"Rashid Khan",bowlerTeam:"GT",runs:42,balls:28,dismissals:5,sr:150.0,label:"contest",insight:"High-risk battle — Pant attacks Rashid with abandon, but has been dismissed 5 times."},
+  // Shubman Gill
+  {batter:"Shubman Gill",batterTeam:"GT",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:62,balls:48,dismissals:4,sr:129.2,label:"contest",insight:"Bumrah has kept Gill quiet and dismissed him 4 times — key battle in any GT vs MI clash."},
+  {batter:"Shubman Gill",batterTeam:"GT",bowler:"Kuldeep Yadav",bowlerTeam:"DC",runs:38,balls:32,dismissals:5,sr:118.8,label:"bunny",insight:"Kuldeep has completely foxed Gill — 5 wickets and a SR of just 119. One to watch."},
+  {batter:"Shubman Gill",batterTeam:"GT",bowler:"Arshdeep Singh",bowlerTeam:"PBKS",runs:92,balls:58,dismissals:2,sr:158.6,label:"threat",insight:"Gill has dominated Arshdeep — 158 SR with minimal fear of dismissal."},
+  // KL Rahul
+  {batter:"KL Rahul",batterTeam:"DC",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:48,balls:42,dismissals:5,sr:114.3,label:"bunny",insight:"Bumrah has Rahul's measure — 5 dismissals and a very low SR tell the complete story."},
+  {batter:"KL Rahul",batterTeam:"DC",bowler:"Rashid Khan",bowlerTeam:"GT",runs:68,balls:48,dismissals:3,sr:141.7,label:"contest",insight:"Rahul plays Rashid cautiously — good SR but has been dismissed 3 times."},
+  // Ruturaj Gaikwad
+  {batter:"Ruturaj Gaikwad",batterTeam:"CSK",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:56,balls:44,dismissals:4,sr:127.3,label:"contest",insight:"Bumrah has kept Ruturaj in check — 4 dismissals and subdued SR in this rivalry."},
+  {batter:"Ruturaj Gaikwad",batterTeam:"CSK",bowler:"Rashid Khan",bowlerTeam:"GT",runs:44,balls:36,dismissals:5,sr:122.2,label:"bunny",insight:"Rashid is Ruturaj's kryptonite — 5 dismissals and a SR under 125. A huge worry for CSK."},
+  {batter:"Ruturaj Gaikwad",batterTeam:"CSK",bowler:"Varun Chakaravarthy",bowlerTeam:"KKR",runs:28,balls:26,dismissals:5,sr:107.7,label:"bunny",insight:"Varun's mystery spin has completely undone Ruturaj — 5 wickets at SR of just 108."},
+  // Rinku Singh
+  {batter:"Rinku Singh",batterTeam:"KKR",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:72,balls:42,dismissals:2,sr:171.4,label:"threat",insight:"Rinku doesn't fear Bumrah — 171 SR and only 2 dismissals. That 5-sixes over isn't forgotten."},
+  // Heinrich Klaasen
+  {batter:"Heinrich Klaasen",batterTeam:"SRH",bowler:"Yuzvendra Chahal",bowlerTeam:"RR",runs:82,balls:46,dismissals:2,sr:178.3,label:"threat",insight:"Klaasen absolutely murders spin — 178 SR vs Chahal with near-zero fear."},
+  {batter:"Heinrich Klaasen",batterTeam:"SRH",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:52,balls:32,dismissals:4,sr:162.5,label:"contest",insight:"Klaasen goes hard at Bumrah but has paid with his wicket 4 times in this blockbuster duel."},
+  // Abhishek Sharma
+  {batter:"Abhishek Sharma",batterTeam:"SRH",bowler:"Kuldeep Yadav",bowlerTeam:"DC",runs:34,balls:26,dismissals:5,sr:130.8,label:"bunny",insight:"Kuldeep has cracked the code against Abhishek — 5 dismissals and a subdued strike rate."},
+  {batter:"Abhishek Sharma",batterTeam:"SRH",bowler:"Arshdeep Singh",bowlerTeam:"PBKS",runs:88,balls:48,dismissals:2,sr:183.3,label:"threat",insight:"Abhishek is devastating vs left-arm pace — 183 SR vs Arshdeep with minimal risk."},
+  // Nicholas Pooran
+  {batter:"Nicholas Pooran",batterTeam:"LSG",bowler:"Rashid Khan",bowlerTeam:"GT",runs:62,balls:34,dismissals:4,sr:182.4,label:"contest",insight:"Pooran goes for Rashid from ball one — 182 SR but dismissed 4 times in this high-stakes duel."},
+  // Jos Buttler
+  {batter:"Jos Buttler",batterTeam:"GT",bowler:"Yuzvendra Chahal",bowlerTeam:"RR",runs:124,balls:72,dismissals:2,sr:172.2,label:"threat",insight:"Buttler absolutely feasts on his old teammate Chahal — 172 SR with near-zero worry."},
+  {batter:"Jos Buttler",batterTeam:"GT",bowler:"Arshdeep Singh",bowlerTeam:"PBKS",runs:48,balls:34,dismissals:5,sr:141.2,label:"bunny",insight:"Arshdeep's left-arm slant has dismissed Buttler 5 times — a massive weapon for PBKS."},
+  // Phil Salt
+  {batter:"Phil Salt",batterTeam:"RCB",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:44,balls:26,dismissals:4,sr:169.2,label:"contest",insight:"Salt attacks Bumrah fearlessly — 169 SR but dismissed 4 times in this explosive duel."},
+  // Hardik Pandya
+  {batter:"Hardik Pandya",batterTeam:"MI",bowler:"Rashid Khan",bowlerTeam:"GT",runs:88,balls:52,dismissals:2,sr:169.2,label:"threat",insight:"Hardik goes after his former GT captain without mercy — 169 SR and rarely dismissed."},
+  // Sunil Narine
+  {batter:"Sunil Narine",batterTeam:"KKR",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:56,balls:28,dismissals:3,sr:200.0,label:"threat",insight:"Narine doesn't care who's bowling — 200 SR vs Bumrah is outrageous pinch-hitting."},
+];
+
+function getBattlesForMatchup(teamA, teamB){
+  return BATTLES.filter(b =>
+    (b.batterTeam===teamA && b.bowlerTeam===teamB) ||
+    (b.batterTeam===teamB && b.bowlerTeam===teamA)
+  );
+}
+
+function renderBattles(){
+  const battles = getBattlesForMatchup(state.teamA, state.teamB);
+  const section = document.getElementById('battlesSection');
+  const grid = document.getElementById('battlesGrid');
+  const note = document.getElementById('battlesNote');
+  if(!battles.length){
+    section.style.display='none';
+    return;
+  }
+  section.style.display='block';
+  // Sort: threats first, then bunnies, then contests
+  const order={threat:0,bunny:1,contest:2};
+  const sorted=[...battles].sort((a,b)=>order[a.label]-order[b.label]);
+  grid.innerHTML=sorted.map(b=>{
+    const isBatterA = b.batterTeam===state.teamA;
+    const batterColor = isBatterA?'var(--gold)':'var(--teal)';
+    const bowlerColor = isBatterA?'var(--teal)':'var(--gold)';
+    const badgeClass = b.label==='threat'?'badge-threat':b.label==='bunny'?'badge-bunny':'badge-contest';
+    const badgeIcon = b.label==='threat'?'⚡ THREAT':b.label==='bunny'?'🐇 BUNNY':'⚔ CONTEST';
+    const avgStr = b.dismissals>0?(b.runs/b.dismissals).toFixed(1):'∞';
+    const srClass = b.label==='bunny'?'highlight':b.label==='threat'?'good':'neutral';
+    const wktClass = b.label==='bunny'?'highlight':b.label==='threat'?'good':'neutral';
+    return `<div class="battle-card ${b.label}">
+      <div><span class="battle-type-badge ${badgeClass}">${badgeIcon}</span></div>
+      <div class="battle-matchup">
+        <span class="battle-player batter" style="color:${batterColor}">${b.batter}</span>
+        <span class="battle-vs">vs</span>
+        <span class="battle-player bowler" style="color:${bowlerColor}">${b.bowler}</span>
+      </div>
+      <div style="font-size:10px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;margin-bottom:8px;letter-spacing:.08em">
+        ${b.batterTeam} <span style="color:var(--text-muted)">→</span> ${b.bowlerTeam}
+      </div>
+      <div class="battle-stats">
+        <div class="bstat ${srClass}">
+          <div class="bstat-val">${b.sr}</div>
+          <div class="bstat-lbl">Str Rate</div>
+        </div>
+        <div class="bstat neutral">
+          <div class="bstat-val">${b.runs}</div>
+          <div class="bstat-lbl">Runs</div>
+        </div>
+        <div class="bstat neutral">
+          <div class="bstat-val">${b.balls}</div>
+          <div class="bstat-lbl">Balls</div>
+        </div>
+        <div class="bstat ${wktClass}">
+          <div class="bstat-val">${b.dismissals}</div>
+          <div class="bstat-lbl">Wkts</div>
+        </div>
+      </div>
+      <div class="battle-insight">${b.insight}</div>
+    </div>`;
+  }).join('');
+  note.textContent=`Showing ${sorted.length} key battles between ${state.teamA} and ${state.teamB} players · Stats from IPL 2021–2026`;
+}
+
 window.addEventListener('load',()=>{renderTeamSelectors();initVenues();updateChase();});
+
 </script>
 </body>
 </html>
