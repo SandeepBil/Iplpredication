@@ -17,6 +17,8 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
 .header-sub{font-size:13px;color:var(--text-dim);margin-top:10px;font-weight:300}
 .data-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,224,176,0.1);border:1px solid rgba(0,224,176,0.25);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--teal);font-family:'JetBrains Mono',monospace;margin-top:10px}
 .data-badge::before{content:'●';font-size:8px;animation:pulse 2s infinite}
+.live-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,59,92,0.1);border:1px solid rgba(255,59,92,0.25);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--red);font-family:'JetBrains Mono',monospace;margin-top:10px;margin-left:8px}
+.live-badge::before{content:'●';font-size:8px;animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .match-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:start;margin-bottom:20px}
 .vs-divider{display:flex;flex-direction:column;align-items:center;justify-content:center;padding-top:48px;gap:6px}
@@ -37,13 +39,19 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
 .stat-value{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.05em;line-height:1}
 .team-a .stat-value{color:var(--gold)}.team-b .stat-value{color:var(--teal)}
 .stat-sub{font-size:10px;color:var(--text-muted);margin-top:2px}
+/* ABSENT PLAYER SYSTEM */
 .players-section{margin-top:10px}
-.players-title{font-size:10px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
-.player-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border);font-size:12px}
-.player-row:last-child{border-bottom:none}
-.player-name{color:var(--text-dim)}
+.players-title{font-size:10px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.absent-hint{font-size:9px;color:var(--text-muted);background:rgba(255,59,92,0.1);border:1px solid rgba(255,59,92,0.2);border-radius:4px;padding:2px 6px;font-family:'JetBrains Mono',monospace}
+.player-row{display:flex;justify-content:space-between;align-items:center;padding:5px 8px;border-radius:6px;cursor:pointer;transition:all .2s;margin-bottom:2px;border:1px solid transparent}
+.player-row:hover{background:rgba(255,255,255,0.04);border-color:var(--border)}
+.player-row.absent{opacity:0.35;background:rgba(255,59,92,0.06);border-color:rgba(255,59,92,0.2)}
+.player-row.absent .player-name{text-decoration:line-through;color:var(--text-muted)}
+.player-name{color:var(--text-dim);font-size:12px;display:flex;align-items:center;gap:6px}
+.absent-tag{font-size:9px;background:rgba(255,59,92,0.2);color:var(--red);border-radius:3px;padding:1px 5px;font-family:'JetBrains Mono',monospace;font-weight:600}
 .player-stat{font-family:'JetBrains Mono',monospace;font-size:11px}
 .team-a .player-stat{color:var(--gold)}.team-b .player-stat{color:var(--teal)}
+.absent-impact{font-size:10px;color:var(--red);font-family:'JetBrains Mono',monospace;margin-top:4px;padding:4px 8px;background:rgba(255,59,92,0.08);border-radius:4px;border-left:2px solid var(--red)}
 .section-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px}
 .section-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:18px 18px 16px}
 .card-header{display:flex;align-items:center;gap:8px;margin-bottom:14px}
@@ -81,10 +89,13 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
 .chase-tag{display:inline-block;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:600;font-family:'JetBrains Mono',monospace;margin-right:4px}
 .tag-easy{background:rgba(0,224,176,.15);color:var(--teal)}.tag-moderate{background:rgba(245,184,0,.15);color:var(--gold)}.tag-hard{background:rgba(255,140,0,.15);color:#FF8C00}.tag-very-hard{background:rgba(255,59,92,.15);color:var(--red)}
 .chase-ctrl{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:12px;color:var(--text-dim)}
+/* PREDICT SECTION */
 .predict-section{text-align:center;margin:24px 0}
 .predict-btn{position:relative;display:inline-flex;align-items:center;gap:10px;padding:16px 48px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--gold) 0%,#FF8C00 100%);color:var(--bg);font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.12em;cursor:pointer;transition:all .3s;box-shadow:0 8px 32px rgba(245,184,0,.25)}
 .predict-btn:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(245,184,0,.35)}
 .predict-btn:active{transform:translateY(0)}
+.predict-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+/* RESULT */
 .result-card{background:var(--bg2);border-radius:20px;border:1px solid var(--border);overflow:hidden;margin-top:8px}
 .result-header{padding:24px 24px 16px;text-align:center;background:linear-gradient(180deg,rgba(245,184,0,.06) 0%,transparent 100%);border-bottom:1px solid var(--border)}
 .result-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px}
@@ -102,13 +113,17 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
 .feat-bar-bg{flex:1;height:3px;background:var(--bg4);border-radius:2px;overflow:hidden}
 .feat-bar-fill{height:100%;border-radius:2px;transition:width .8s ease}
 .feat-pct{font-family:'JetBrains Mono',monospace;font-size:10px;min-width:60px;text-align:right}
-.insight-box{margin:0 24px 20px;background:rgba(245,184,0,.05);border:1px solid rgba(245,184,0,.15);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--text-dim);line-height:1.6}
-.insight-box strong{color:var(--gold)}
-.history-section{padding:0 24px 20px}
-.history-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;color:var(--text-muted);text-transform:uppercase;margin-bottom:10px}
-.history-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
-.history-row:last-child{border-bottom:none}
-/* ── PLAYER BATTLES ── */
+/* AI INSIGHT BOX */
+.ai-insight-box{margin:0 24px 20px;background:rgba(245,184,0,.05);border:1px solid rgba(245,184,0,.15);border-radius:10px;padding:16px 18px;font-size:13px;color:var(--text-dim);line-height:1.7;position:relative}
+.ai-insight-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold)}
+.ai-insight-header::before{content:'✦';font-size:10px}
+.ai-thinking{display:flex;align-items:center;gap:8px;color:var(--text-muted);font-size:12px;font-family:'JetBrains Mono',monospace}
+.thinking-dots span{display:inline-block;animation:blink 1.4s infinite both}
+.thinking-dots span:nth-child(2){animation-delay:.2s}
+.thinking-dots span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:0}40%{opacity:1}}
+.absent-warning{margin:0 24px 16px;background:rgba(255,59,92,0.08);border:1px solid rgba(255,59,92,0.25);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red);font-family:'JetBrains Mono',monospace;display:flex;gap:8px;align-items:flex-start}
+/* BATTLES */
 .battles-section{margin-bottom:20px}
 .battles-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .battles-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.08em;color:var(--text)}
@@ -124,25 +139,24 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
 .badge-contest{background:rgba(245,184,0,.12);color:var(--gold);border:1px solid rgba(245,184,0,.25)}
 .battle-matchup{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .battle-player{font-size:13px;font-weight:500;color:var(--text);flex:1}
-.battle-player.batter{color:var(--gold)}
-.battle-player.bowler{color:var(--teal)}
+.battle-player.batter{color:var(--gold)}.battle-player.bowler{color:var(--teal)}
 .battle-vs{font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--text-muted);padding:0 2px}
 .battle-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}
 .bstat{background:var(--bg3);border-radius:8px;padding:6px 8px;text-align:center;border:1px solid var(--border)}
 .bstat-val{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.05em;line-height:1}
 .bstat-lbl{font-size:9px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;margin-top:1px}
-.bstat.highlight .bstat-val{color:var(--red)}
-.bstat.good .bstat-val{color:var(--teal)}
-.bstat.neutral .bstat-val{color:var(--gold)}
+.bstat.highlight .bstat-val{color:var(--red)}.bstat.good .bstat-val{color:var(--teal)}.bstat.neutral .bstat-val{color:var(--gold)}
 .battle-insight{font-size:11px;color:var(--text-dim);line-height:1.5;border-top:1px solid var(--border);padding-top:8px}
-.battle-insight strong{color:var(--text)}
 .battles-note{font-size:11px;color:var(--text-muted);text-align:center;margin-top:10px;font-family:'JetBrains Mono',monospace}
-@media(max-width:768px){.battles-grid{grid-template-columns:1fr}}
+.history-section{padding:0 24px 20px}
+.history-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;color:var(--text-muted);text-transform:uppercase;margin-bottom:10px}
+.history-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
+.history-row:last-child{border-bottom:none}
 @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(0,0,0,.3);border-top-color:var(--bg);border-radius:50%;animation:spin .8s linear infinite}
 .result-animate{animation:slideUp .4s ease}
-@media(max-width:768px){.match-grid{grid-template-columns:1fr}.vs-divider{padding:0;flex-direction:row;justify-content:center}.section-row{grid-template-columns:1fr}.feat-breakdown{grid-template-columns:1fr}}
+@media(max-width:768px){.match-grid{grid-template-columns:1fr}.vs-divider{padding:0;flex-direction:row;justify-content:center}.section-row{grid-template-columns:1fr}.feat-breakdown{grid-template-columns:1fr}.battles-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -151,24 +165,27 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
   <div class="eyebrow">🏏 IPL Match Winner Predictor</div>
   <h1>IPL Match<br>Predictor</h1>
   <p class="header-sub">Powered by real data · 2026 squads · Stats from 2021–2026</p>
-  <div class="data-badge">LIVE SQUADS · IPL 2026 · 10 teams · Current rosters only</div>
+  <div class="data-badge">LIVE SQUADS · IPL 2026 · 10 teams</div>
+  <div class="live-badge">AI ANALYSIS · REAL-TIME</div>
 </header>
 
 <div class="match-grid">
   <div class="team-panel team-a" id="panelA">
     <div class="team-label">🟡 Team A</div>
     <div class="team-selector" id="selectorA"></div>
-    <div class="stats-grid" id="statsA">
-      <div class="stat-block"><div class="stat-name">IPL Win %</div><div class="stat-value team-a" id="a-winpct">—</div><div class="stat-sub" id="a-matches">— matches</div></div>
+    <div class="stats-grid">
+      <div class="stat-block"><div class="stat-name">IPL Win %</div><div class="stat-value team-a" id="a-winpct">—</div><div class="stat-sub" id="a-matches">—</div></div>
       <div class="stat-block"><div class="stat-name">Chase Win %</div><div class="stat-value team-a" id="a-chase">—</div><div class="stat-sub">when chasing</div></div>
-      <div class="stat-block"><div class="stat-name">Recent Form</div><div class="stat-value team-a" id="a-form">—</div><div class="stat-sub" id="a-form-sub">2024–26 score</div></div>
-      <div class="stat-block"><div class="stat-name">Last Season</div><div class="stat-value team-a" id="a-last">—</div><div class="stat-sub" id="a-last-sub">2025 W-L</div></div>
+      <div class="stat-block"><div class="stat-name">Recent Form</div><div class="stat-value team-a" id="a-form">—</div><div class="stat-sub" id="a-form-sub">2024–26</div></div>
+      <div class="stat-block"><div class="stat-name">Last Season</div><div class="stat-value team-a" id="a-last">—</div><div class="stat-sub">IPL 2025</div></div>
     </div>
     <div class="players-section">
-      <div class="players-title">Top Batters (2021–26)</div>
+      <div class="players-title">Top Batters <span class="absent-hint">TAP TO MARK ABSENT</span></div>
       <div id="a-batters"></div>
-      <div class="players-title" style="margin-top:8px">Top Bowlers — Economy (2021–26)</div>
+      <div id="a-batting-impact"></div>
+      <div class="players-title" style="margin-top:8px">Top Bowlers <span class="absent-hint">TAP TO MARK ABSENT</span></div>
       <div id="a-bowlers"></div>
+      <div id="a-bowling-impact"></div>
     </div>
   </div>
 
@@ -177,17 +194,19 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
   <div class="team-panel team-b" id="panelB">
     <div class="team-label">🟢 Team B</div>
     <div class="team-selector" id="selectorB"></div>
-    <div class="stats-grid" id="statsB">
-      <div class="stat-block"><div class="stat-name">IPL Win %</div><div class="stat-value team-b" id="b-winpct">—</div><div class="stat-sub" id="b-matches">— matches</div></div>
+    <div class="stats-grid">
+      <div class="stat-block"><div class="stat-name">IPL Win %</div><div class="stat-value team-b" id="b-winpct">—</div><div class="stat-sub" id="b-matches">—</div></div>
       <div class="stat-block"><div class="stat-name">Chase Win %</div><div class="stat-value team-b" id="b-chase">—</div><div class="stat-sub">when chasing</div></div>
-      <div class="stat-block"><div class="stat-name">Recent Form</div><div class="stat-value team-b" id="b-form">—</div><div class="stat-sub" id="b-form-sub">2024–26 score</div></div>
-      <div class="stat-block"><div class="stat-name">Last Season</div><div class="stat-value team-b" id="b-last">—</div><div class="stat-sub" id="b-last-sub">2025 W-L</div></div>
+      <div class="stat-block"><div class="stat-name">Recent Form</div><div class="stat-value team-b" id="b-form">—</div><div class="stat-sub" id="b-form-sub">2024–26</div></div>
+      <div class="stat-block"><div class="stat-name">Last Season</div><div class="stat-value team-b" id="b-last">—</div><div class="stat-sub">IPL 2025</div></div>
     </div>
     <div class="players-section">
-      <div class="players-title">Top Batters (2021–26)</div>
+      <div class="players-title">Top Batters <span class="absent-hint">TAP TO MARK ABSENT</span></div>
       <div id="b-batters"></div>
-      <div class="players-title" style="margin-top:8px">Top Bowlers — Economy (2021–26)</div>
+      <div id="b-batting-impact"></div>
+      <div class="players-title" style="margin-top:8px">Top Bowlers <span class="absent-hint">TAP TO MARK ABSENT</span></div>
       <div id="b-bowlers"></div>
+      <div id="b-bowling-impact"></div>
     </div>
   </div>
 </div>
@@ -196,14 +215,11 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
   <div class="section-card">
     <div class="card-header"><div class="card-icon icon-blue">🏟</div><div class="card-title">Venue</div></div>
     <select class="venue-select" id="venueSelect" onchange="updateVenue()"></select>
-    <div id="venue-stats">
-      <div class="venue-stat"><span class="venue-stat-label">Avg 1st innings</span><span class="venue-stat-val" id="v-avg">—</span></div>
-      <div class="venue-stat"><span class="venue-stat-label">Batting first wins</span><span class="venue-stat-val" id="v-bf">—</span></div>
-      <div class="venue-stat"><span class="venue-stat-label">Chasing wins</span><span class="venue-stat-val" id="v-chase">—</span></div>
-      <div class="venue-stat"><span class="venue-stat-label">Matches played</span><span class="venue-stat-val" id="v-matches">—</span></div>
-    </div>
+    <div class="venue-stat"><span class="venue-stat-label">Avg 1st innings</span><span class="venue-stat-val" id="v-avg">—</span></div>
+    <div class="venue-stat"><span class="venue-stat-label">Batting first wins</span><span class="venue-stat-val" id="v-bf">—</span></div>
+    <div class="venue-stat"><span class="venue-stat-label">Chasing wins</span><span class="venue-stat-val" id="v-chase">—</span></div>
+    <div class="venue-stat"><span class="venue-stat-label">Matches played</span><span class="venue-stat-val" id="v-matches">—</span></div>
   </div>
-
   <div class="section-card">
     <div class="card-header"><div class="card-icon icon-gold">🌿</div><div class="card-title">Pitch Type</div></div>
     <div class="pitch-options">
@@ -214,7 +230,6 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
       <div class="pitch-opt" onclick="setPitch('dry',this)"><div class="pitch-dot"></div>Dry / Dusty</div>
     </div>
   </div>
-
   <div class="section-card">
     <div class="card-header"><div class="card-icon icon-teal">🪙</div><div class="card-title">Toss</div></div>
     <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;font-family:'JetBrains Mono',monospace;letter-spacing:.08em">TOSS WON BY</div>
@@ -243,7 +258,6 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
     <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);margin-bottom:10px"><span id="h2h-wa">—</span><span id="h2h-wb">—</span></div>
     <div class="h2h-history" id="h2h-history"></div>
   </div>
-
   <div class="section-card">
     <div class="card-header"><div class="card-icon icon-gold">🎯</div><div class="card-title">Target / Chase</div></div>
     <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;font-family:'JetBrains Mono',monospace;letter-spacing:.08em">TARGET SCORE</div>
@@ -257,10 +271,10 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
       <div class="dec-btn active" id="chase-team-a" onclick="setChasingTeam('a',this)">Team A chases</div>
       <div class="dec-btn" id="chase-team-b" onclick="setChasingTeam('b',this)">Team B chases</div>
     </div>
-    <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;font-family:'JetBrains Mono',monospace;letter-spacing:.08em">TEAM A CHASE WIN RATE (REAL)</div>
-    <div class="chase-ctrl"><span id="a-chase-lbl" style="color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500">—</span><span style="color:var(--text-muted)">from real data</span></div>
-    <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;font-family:'JetBrains Mono',monospace;letter-spacing:.08em">TEAM B CHASE WIN RATE (REAL)</div>
-    <div class="chase-ctrl"><span id="b-chase-lbl" style="color:var(--teal);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500">—</span><span style="color:var(--text-muted)">from real data</span></div>
+    <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;font-family:'JetBrains Mono',monospace">TEAM A CHASE WIN RATE</div>
+    <div class="chase-ctrl"><span id="a-chase-lbl" style="color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:13px">—</span></div>
+    <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;font-family:'JetBrains Mono',monospace">TEAM B CHASE WIN RATE</div>
+    <div class="chase-ctrl"><span id="b-chase-lbl" style="color:var(--teal);font-family:'JetBrains Mono',monospace;font-size:13px">—</span></div>
   </div>
 </div>
 
@@ -270,7 +284,6 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
   </button>
 </div>
 
-<!-- PLAYER BATTLES -->
 <div class="battles-section" id="battlesSection" style="display:none">
   <div class="battles-header">
     <div>
@@ -284,7 +297,7 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
 
 <div class="result-card" id="resultCard" style="display:none">
   <div class="result-header">
-    <div class="result-eyebrow">ML MODEL · REAL IPL DATA · 2026 SQUADS</div>
+    <div class="result-eyebrow">AI-POWERED · REAL IPL DATA · SQUAD-ADJUSTED</div>
     <div class="result-winner" id="resultWinner">—</div>
     <div class="result-conf" id="resultConf">—</div>
   </div>
@@ -295,225 +308,59 @@ h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,78px);letter-spa
     </div>
     <div class="prob-labels"><span id="prob-la" style="color:var(--gold)">—</span><span id="prob-lb" style="color:var(--teal)">—</span></div>
   </div>
+  <div id="absent-warning-box"></div>
   <div class="feat-breakdown" id="featureBreakdown"></div>
-  <div class="insight-box" id="insightBox"></div>
+  <div class="ai-insight-box" id="insightBox">
+    <div class="ai-insight-header">Match Analysis</div>
+    <div id="ai-analysis-content"><div class="ai-thinking">Waiting for prediction<span class="thinking-dots"><span>.</span><span>.</span><span>.</span></span></div></div>
+  </div>
   <div class="history-section">
-    <div class="history-title">Recent H2H Results (Real)</div>
+    <div class="history-title">Recent H2H Results</div>
     <div id="historyList"></div>
   </div>
 </div>
 </div>
 
 <script>
-// ─── ALL PLAYER STATS: 2021–2026 ONLY, FILTERED TO CURRENT 2026 SQUADS ───
 const REAL_DATA = {
 "team_stats":{
-  // win_pct: all-time IPL | chase_win_pct: all-time
-  // seasons: W-L per season from 2021 onwards (recent form)
-  // recent_form: weighted score 2024+2025+2026 partial (higher = better current form)
-  "CSK":{"win_pct":55.7,"matches":235,"wins":131,"chase_win_pct":62.7,
-    "seasons":{"2021":{"w":9,"l":5},"2022":{"w":9,"l":5},"2023":{"w":9,"l":5},"2024":{"w":7,"l":7},"2025":{"w":5,"l":9},"2026":{"w":1,"l":2}},
-    "recent_form":38},
-  "GT":{"win_pct":60.7,"matches":61,"wins":37,"chase_win_pct":66.7,
-    "seasons":{"2022":{"w":10,"l":4},"2023":{"w":10,"l":4},"2024":{"w":5,"l":9},"2025":{"w":8,"l":6},"2026":{"w":2,"l":1}},
-    "recent_form":54},
-  "SRH":{"win_pct":46.0,"matches":187,"wins":86,"chase_win_pct":49.4,
-    "seasons":{"2021":{"w":3,"l":11},"2022":{"w":6,"l":8},"2023":{"w":7,"l":7},"2024":{"w":8,"l":6},"2025":{"w":7,"l":7},"2026":{"w":1,"l":2}},
-    "recent_form":52},
-  "PBKS":{"win_pct":43.8,"matches":240,"wins":105,"chase_win_pct":49.5,
-    "seasons":{"2021":{"w":6,"l":8},"2022":{"w":7,"l":7},"2023":{"w":7,"l":7},"2024":{"w":7,"l":7},"2025":{"w":11,"l":3},"2026":{"w":2,"l":1}},
-    "recent_form":72},
-  "RCB":{"win_pct":47.5,"matches":244,"wins":116,"chase_win_pct":54.3,
-    "seasons":{"2021":{"w":9,"l":5},"2022":{"w":8,"l":6},"2023":{"w":7,"l":7},"2024":{"w":7,"l":7},"2025":{"w":10,"l":4},"2026":{"w":2,"l":1}},
-    "recent_form":68},
-  "RR":{"win_pct":46.8,"matches":220,"wins":103,"chase_win_pct":52.2,
-    "seasons":{"2021":{"w":5,"l":8},"2022":{"w":9,"l":5},"2023":{"w":8,"l":6},"2024":{"w":8,"l":6},"2025":{"w":9,"l":5},"2026":{"w":2,"l":1}},
-    "recent_form":66},
-  "LSG":{"win_pct":50.8,"matches":59,"wins":30,"chase_win_pct":40.0,
-    "seasons":{"2022":{"w":9,"l":5},"2023":{"w":7,"l":7},"2024":{"w":7,"l":7},"2025":{"w":5,"l":9},"2026":{"w":2,"l":1}},
-    "recent_form":46},
-  "MI":{"win_pct":55.0,"matches":251,"wins":138,"chase_win_pct":57.9,
-    "seasons":{"2021":{"w":11,"l":3},"2022":{"w":4,"l":10},"2023":{"w":5,"l":9},"2024":{"w":4,"l":10},"2025":{"w":8,"l":6},"2026":{"w":2,"l":1}},
-    "recent_form":56},
-  "KKR":{"win_pct":49.6,"matches":242,"wins":120,"chase_win_pct":57.9,
-    "seasons":{"2021":{"w":7,"l":7},"2022":{"w":6,"l":8},"2023":{"w":6,"l":8},"2024":{"w":9,"l":5},"2025":{"w":5,"l":9},"2026":{"w":1,"l":2}},
-    "recent_form":40},
-  "DC":{"win_pct":42.7,"matches":241,"wins":103,"chase_win_pct":47.3,
-    "seasons":{"2021":{"w":8,"l":6},"2022":{"w":7,"l":7},"2023":{"w":5,"l":9},"2024":{"w":7,"l":7},"2025":{"w":8,"l":6},"2026":{"w":2,"l":1}},
-    "recent_form":58}
+  "CSK":{"win_pct":55.7,"matches":235,"wins":131,"chase_win_pct":62.7,"seasons":{"2021":{"w":9,"l":5},"2022":{"w":9,"l":5},"2023":{"w":9,"l":5},"2024":{"w":7,"l":7},"2025":{"w":5,"l":9},"2026":{"w":1,"l":2}},"recent_form":38},
+  "GT":{"win_pct":60.7,"matches":61,"wins":37,"chase_win_pct":66.7,"seasons":{"2022":{"w":10,"l":4},"2023":{"w":10,"l":4},"2024":{"w":5,"l":9},"2025":{"w":8,"l":6},"2026":{"w":2,"l":1}},"recent_form":54},
+  "SRH":{"win_pct":46.0,"matches":187,"wins":86,"chase_win_pct":49.4,"seasons":{"2021":{"w":3,"l":11},"2022":{"w":6,"l":8},"2023":{"w":7,"l":7},"2024":{"w":8,"l":6},"2025":{"w":7,"l":7},"2026":{"w":1,"l":2}},"recent_form":52},
+  "PBKS":{"win_pct":43.8,"matches":240,"wins":105,"chase_win_pct":49.5,"seasons":{"2021":{"w":6,"l":8},"2022":{"w":7,"l":7},"2023":{"w":7,"l":7},"2024":{"w":7,"l":7},"2025":{"w":11,"l":3},"2026":{"w":2,"l":1}},"recent_form":72},
+  "RCB":{"win_pct":47.5,"matches":244,"wins":116,"chase_win_pct":54.3,"seasons":{"2021":{"w":9,"l":5},"2022":{"w":8,"l":6},"2023":{"w":7,"l":7},"2024":{"w":7,"l":7},"2025":{"w":10,"l":4},"2026":{"w":2,"l":1}},"recent_form":68},
+  "RR":{"win_pct":46.8,"matches":220,"wins":103,"chase_win_pct":52.2,"seasons":{"2021":{"w":5,"l":8},"2022":{"w":9,"l":5},"2023":{"w":8,"l":6},"2024":{"w":8,"l":6},"2025":{"w":9,"l":5},"2026":{"w":2,"l":1}},"recent_form":66},
+  "LSG":{"win_pct":50.8,"matches":59,"wins":30,"chase_win_pct":40.0,"seasons":{"2022":{"w":9,"l":5},"2023":{"w":7,"l":7},"2024":{"w":7,"l":7},"2025":{"w":5,"l":9},"2026":{"w":2,"l":1}},"recent_form":46},
+  "MI":{"win_pct":55.0,"matches":251,"wins":138,"chase_win_pct":57.9,"seasons":{"2021":{"w":11,"l":3},"2022":{"w":4,"l":10},"2023":{"w":5,"l":9},"2024":{"w":4,"l":10},"2025":{"w":8,"l":6},"2026":{"w":2,"l":1}},"recent_form":56},
+  "KKR":{"win_pct":49.6,"matches":242,"wins":120,"chase_win_pct":57.9,"seasons":{"2021":{"w":7,"l":7},"2022":{"w":6,"l":8},"2023":{"w":6,"l":8},"2024":{"w":9,"l":5},"2025":{"w":5,"l":9},"2026":{"w":1,"l":2}},"recent_form":40},
+  "DC":{"win_pct":42.7,"matches":241,"wins":103,"chase_win_pct":47.3,"seasons":{"2021":{"w":8,"l":6},"2022":{"w":7,"l":7},"2023":{"w":5,"l":9},"2024":{"w":7,"l":7},"2025":{"w":8,"l":6},"2026":{"w":2,"l":1}},"recent_form":58}
 },
-
-// Batters: only players in IPL 2026 squads, stats from 2021 onwards
 "team_batters":{
-  "CSK":[
-    {"name":"Ruturaj Gaikwad","sr":133.7,"runs":2508,"balls":1876},
-    {"name":"MS Dhoni","sr":136.1,"runs":1320,"balls":969},
-    {"name":"Shivam Dube","sr":155.8,"runs":1154,"balls":741},
-    {"name":"Sanju Samson","sr":145.2,"runs":982,"balls":676},
-    {"name":"Dewald Brevis","sr":143.2,"runs":634,"balls":443},
-    {"name":"Ayush Mhatre","sr":149.0,"runs":312,"balls":209}
-  ],
-  "DC":[
-    {"name":"KL Rahul","sr":136.2,"runs":3204,"balls":2352},
-    {"name":"David Miller","sr":141.3,"runs":1248,"balls":883},
-    {"name":"Axar Patel","sr":144.2,"runs":876,"balls":607},
-    {"name":"Tristan Stubbs","sr":148.9,"runs":521,"balls":350},
-    {"name":"Prithvi Shaw","sr":143.2,"runs":489,"balls":341},
-    {"name":"Nitish Rana","sr":138.4,"runs":1406,"balls":1016}
-  ],
-  "GT":[
-    {"name":"Shubman Gill","sr":134.8,"runs":3905,"balls":2896},
-    {"name":"Jos Buttler","sr":145.2,"runs":2108,"balls":1452},
-    {"name":"B Sai Sudharsan","sr":139.9,"runs":1806,"balls":1291},
-    {"name":"Shahrukh Khan","sr":140.7,"runs":736,"balls":523},
-    {"name":"Rashid Khan","sr":150.4,"runs":582,"balls":387},
-    {"name":"Washington Sundar","sr":120.4,"runs":520,"balls":432}
-  ],
-  "KKR":[
-    {"name":"Rinku Singh","sr":148.4,"runs":1374,"balls":925},
-    {"name":"Sunil Narine","sr":163.4,"runs":1210,"balls":741},
-    {"name":"Ajinkya Rahane","sr":134.2,"runs":842,"balls":627},
-    {"name":"Rovman Powell","sr":162.1,"runs":678,"balls":418},
-    {"name":"Rachin Ravindra","sr":138.8,"runs":612,"balls":441},
-    {"name":"Angkrish Raghuvanshi","sr":152.0,"runs":412,"balls":271}
-  ],
-  "LSG":[
-    {"name":"Rishabh Pant","sr":150.2,"runs":2134,"balls":1421},
-    {"name":"Nicholas Pooran","sr":159.7,"runs":2301,"balls":1441},
-    {"name":"Aiden Markram","sr":131.8,"runs":1451,"balls":1101},
-    {"name":"Mitchell Marsh","sr":144.8,"runs":1102,"balls":761},
-    {"name":"Ayush Badoni","sr":129.6,"runs":963,"balls":743},
-    {"name":"Abdul Samad","sr":146.7,"runs":779,"balls":531}
-  ],
-  "MI":[
-    {"name":"Rohit Sharma","sr":130.2,"runs":2180,"balls":1675},
-    {"name":"Suryakumar Yadav","sr":173.1,"runs":2842,"balls":1641},
-    {"name":"Hardik Pandya","sr":141.7,"runs":1468,"balls":1036},
-    {"name":"Tilak Varma","sr":148.3,"runs":1312,"balls":884},
-    {"name":"Naman Dhir","sr":155.4,"runs":612,"balls":394},
-    {"name":"Sherfane Rutherford","sr":158.2,"runs":478,"balls":302}
-  ],
-  "PBKS":[
-    {"name":"Shreyas Iyer","sr":127.9,"runs":2968,"balls":2321},
-    {"name":"Prabhsimran Singh","sr":153.2,"runs":1042,"balls":680},
-    {"name":"Shashank Singh","sr":162.3,"runs":876,"balls":540},
-    {"name":"Nehal Wadhera","sr":144.7,"runs":698,"balls":483},
-    {"name":"Marcus Stoinis","sr":136.8,"runs":1124,"balls":821},
-    {"name":"Priyansh Arya","sr":167.4,"runs":412,"balls":246}
-  ],
-  "RCB":[
-    {"name":"Virat Kohli","sr":129.4,"runs":3820,"balls":2952},
-    {"name":"Phil Salt","sr":162.8,"runs":1408,"balls":865},
-    {"name":"Rajat Patidar","sr":151.4,"runs":1624,"balls":1073},
-    {"name":"Tim David","sr":155.6,"runs":1012,"balls":651},
-    {"name":"Devdutt Padikkal","sr":134.2,"runs":1218,"balls":907},
-    {"name":"Jacob Bethell","sr":148.9,"runs":412,"balls":277}
-  ],
-  "RR":[
-    {"name":"Yashasvi Jaiswal","sr":147.9,"runs":2204,"balls":1490},
-    {"name":"Riyan Parag","sr":135.6,"runs":1584,"balls":1168},
-    {"name":"Shimron Hetmyer","sr":143.6,"runs":1488,"balls":1036},
-    {"name":"Dhruv Jurel","sr":141.2,"runs":612,"balls":433},
-    {"name":"Vaibhav Suryavanshi","sr":182.4,"runs":278,"balls":152},
-    {"name":"Ravindra Jadeja","sr":129.8,"runs":842,"balls":649}
-  ],
-  "SRH":[
-    {"name":"Travis Head","sr":191.4,"runs":1842,"balls":962},
-    {"name":"Abhishek Sharma","sr":155.9,"runs":1871,"balls":1200},
-    {"name":"Heinrich Klaasen","sr":174.2,"runs":1624,"balls":932},
-    {"name":"Ishan Kishan","sr":136.7,"runs":2773,"balls":2029},
-    {"name":"Nitish Kumar Reddy","sr":142.8,"runs":812,"balls":569},
-    {"name":"Liam Livingstone","sr":155.3,"runs":968,"balls":623}
-  ]
+  "CSK":[{"name":"Ruturaj Gaikwad","sr":133.7,"runs":2508,"balls":1876,"role":"bat"},{"name":"MS Dhoni","sr":136.1,"runs":1320,"balls":969,"role":"wk"},{"name":"Shivam Dube","sr":155.8,"runs":1154,"balls":741,"role":"allr"},{"name":"Sanju Samson","sr":145.2,"runs":982,"balls":676,"role":"wk"},{"name":"Dewald Brevis","sr":143.2,"runs":634,"balls":443,"role":"bat"},{"name":"Ayush Mhatre","sr":149.0,"runs":312,"balls":209,"role":"bat"}],
+  "DC":[{"name":"KL Rahul","sr":136.2,"runs":3204,"balls":2352,"role":"wk"},{"name":"David Miller","sr":141.3,"runs":1248,"balls":883,"role":"bat"},{"name":"Axar Patel","sr":144.2,"runs":876,"balls":607,"role":"allr"},{"name":"Tristan Stubbs","sr":148.9,"runs":521,"balls":350,"role":"bat"},{"name":"Prithvi Shaw","sr":143.2,"runs":489,"balls":341,"role":"bat"},{"name":"Nitish Rana","sr":138.4,"runs":1406,"balls":1016,"role":"bat"}],
+  "GT":[{"name":"Shubman Gill","sr":134.8,"runs":3905,"balls":2896,"role":"bat"},{"name":"Jos Buttler","sr":145.2,"runs":2108,"balls":1452,"role":"wk"},{"name":"B Sai Sudharsan","sr":139.9,"runs":1806,"balls":1291,"role":"bat"},{"name":"Shahrukh Khan","sr":140.7,"runs":736,"balls":523,"role":"bat"},{"name":"Rashid Khan","sr":150.4,"runs":582,"balls":387,"role":"allr"},{"name":"Washington Sundar","sr":120.4,"runs":520,"balls":432,"role":"allr"}],
+  "KKR":[{"name":"Rinku Singh","sr":148.4,"runs":1374,"balls":925,"role":"bat"},{"name":"Sunil Narine","sr":163.4,"runs":1210,"balls":741,"role":"allr"},{"name":"Ajinkya Rahane","sr":134.2,"runs":842,"balls":627,"role":"bat"},{"name":"Rovman Powell","sr":162.1,"runs":678,"balls":418,"role":"bat"},{"name":"Rachin Ravindra","sr":138.8,"runs":612,"balls":441,"role":"allr"},{"name":"Angkrish Raghuvanshi","sr":152.0,"runs":412,"balls":271,"role":"bat"}],
+  "LSG":[{"name":"Rishabh Pant","sr":150.2,"runs":2134,"balls":1421,"role":"wk"},{"name":"Nicholas Pooran","sr":159.7,"runs":2301,"balls":1441,"role":"wk"},{"name":"Aiden Markram","sr":131.8,"runs":1451,"balls":1101,"role":"allr"},{"name":"Mitchell Marsh","sr":144.8,"runs":1102,"balls":761,"role":"allr"},{"name":"Ayush Badoni","sr":129.6,"runs":963,"balls":743,"role":"bat"},{"name":"Abdul Samad","sr":146.7,"runs":779,"balls":531,"role":"bat"}],
+  "MI":[{"name":"Rohit Sharma","sr":130.2,"runs":2180,"balls":1675,"role":"bat"},{"name":"Suryakumar Yadav","sr":173.1,"runs":2842,"balls":1641,"role":"bat"},{"name":"Hardik Pandya","sr":141.7,"runs":1468,"balls":1036,"role":"allr"},{"name":"Tilak Varma","sr":148.3,"runs":1312,"balls":884,"role":"bat"},{"name":"Naman Dhir","sr":155.4,"runs":612,"balls":394,"role":"bat"},{"name":"Sherfane Rutherford","sr":158.2,"runs":478,"balls":302,"role":"bat"}],
+  "PBKS":[{"name":"Shreyas Iyer","sr":127.9,"runs":2968,"balls":2321,"role":"bat"},{"name":"Prabhsimran Singh","sr":153.2,"runs":1042,"balls":680,"role":"wk"},{"name":"Shashank Singh","sr":162.3,"runs":876,"balls":540,"role":"bat"},{"name":"Nehal Wadhera","sr":144.7,"runs":698,"balls":483,"role":"bat"},{"name":"Marcus Stoinis","sr":136.8,"runs":1124,"balls":821,"role":"allr"},{"name":"Priyansh Arya","sr":167.4,"runs":412,"balls":246,"role":"bat"}],
+  "RCB":[{"name":"Virat Kohli","sr":129.4,"runs":3820,"balls":2952,"role":"bat"},{"name":"Phil Salt","sr":162.8,"runs":1408,"balls":865,"role":"wk"},{"name":"Rajat Patidar","sr":151.4,"runs":1624,"balls":1073,"role":"bat"},{"name":"Tim David","sr":155.6,"runs":1012,"balls":651,"role":"bat"},{"name":"Devdutt Padikkal","sr":134.2,"runs":1218,"balls":907,"role":"bat"},{"name":"Jacob Bethell","sr":148.9,"runs":412,"balls":277,"role":"allr"}],
+  "RR":[{"name":"Yashasvi Jaiswal","sr":147.9,"runs":2204,"balls":1490,"role":"bat"},{"name":"Riyan Parag","sr":135.6,"runs":1584,"balls":1168,"role":"bat"},{"name":"Shimron Hetmyer","sr":143.6,"runs":1488,"balls":1036,"role":"bat"},{"name":"Dhruv Jurel","sr":141.2,"runs":612,"balls":433,"role":"wk"},{"name":"Vaibhav Suryavanshi","sr":182.4,"runs":278,"balls":152,"role":"bat"},{"name":"Ravindra Jadeja","sr":129.8,"runs":842,"balls":649,"role":"allr"}],
+  "SRH":[{"name":"Travis Head","sr":191.4,"runs":1842,"balls":962,"role":"bat"},{"name":"Abhishek Sharma","sr":155.9,"runs":1871,"balls":1200,"role":"bat"},{"name":"Heinrich Klaasen","sr":174.2,"runs":1624,"balls":932,"role":"wk"},{"name":"Ishan Kishan","sr":136.7,"runs":2773,"balls":2029,"role":"wk"},{"name":"Nitish Kumar Reddy","sr":142.8,"runs":812,"balls":569,"role":"allr"},{"name":"Liam Livingstone","sr":155.3,"runs":968,"balls":623,"role":"allr"}]
 },
-
-// Bowlers: only players in IPL 2026 squads, stats from 2021 onwards (economy rate)
 "team_bowlers":{
-  "CSK":[
-    {"name":"Noor Ahmad","eco":7.42,"balls":612},
-    {"name":"Khaleel Ahmed","eco":8.12,"balls":1248},
-    {"name":"Rahul Chahar","eco":7.84,"balls":1124},
-    {"name":"Mukesh Choudhary","eco":8.56,"balls":486},
-    {"name":"Anshul Kamboj","eco":7.96,"balls":342},
-    {"name":"Matt Henry","eco":8.24,"balls":412}
-  ],
-  "DC":[
-    {"name":"Kuldeep Yadav","eco":7.68,"balls":1342},
-    {"name":"Mitchell Starc","eco":8.42,"balls":1124},
-    {"name":"Axar Patel","eco":7.82,"balls":2156},
-    {"name":"T Natarajan","eco":8.18,"balls":1456},
-    {"name":"Mukesh Kumar","eco":8.34,"balls":612},
-    {"name":"Kyle Jamieson","eco":8.62,"balls":424}
-  ],
-  "GT":[
-    {"name":"Rashid Khan","eco":7.21,"balls":3165},
-    {"name":"Mohammed Siraj","eco":8.39,"balls":2412},
-    {"name":"Kagiso Rabada","eco":8.51,"balls":1989},
-    {"name":"Prasidh Krishna","eco":8.42,"balls":1621},
-    {"name":"Washington Sundar","eco":7.96,"balls":968},
-    {"name":"Jason Holder","eco":8.74,"balls":612}
-  ],
-  "KKR":[
-    {"name":"Sunil Narine","eco":6.88,"balls":4174},
-    {"name":"Varun Chakaravarthy","eco":7.42,"balls":1856},
-    {"name":"Matheesha Pathirana","eco":8.12,"balls":742},
-    {"name":"Vaibhav Arora","eco":8.68,"balls":624},
-    {"name":"Blessing Muzarabani","eco":8.82,"balls":312},
-    {"name":"Harshit Rana","eco":8.54,"balls":412}
-  ],
-  "LSG":[
-    {"name":"Mohsin Khan","eco":8.13,"balls":532},
-    {"name":"Mohammad Shami","eco":8.24,"balls":842},
-    {"name":"Avesh Khan","eco":8.62,"balls":1342},
-    {"name":"Mayank Yadav","eco":8.74,"balls":312},
-    {"name":"Wanindu Hasaranga","eco":8.36,"balls":624},
-    {"name":"Anrich Nortje","eco":8.94,"balls":412}
-  ],
-  "MI":[
-    {"name":"Jasprit Bumrah","eco":7.13,"balls":3249},
-    {"name":"Trent Boult","eco":7.82,"balls":1624},
-    {"name":"Deepak Chahar","eco":8.14,"balls":1124},
-    {"name":"Allah Ghazanfar","eco":7.56,"balls":412},
-    {"name":"Mitchell Santner","eco":7.84,"balls":624},
-    {"name":"Hardik Pandya","eco":9.12,"balls":1124}
-  ],
-  "PBKS":[
-    {"name":"Arshdeep Singh","eco":8.12,"balls":1856},
-    {"name":"Yuzvendra Chahal","eco":7.68,"balls":3124},
-    {"name":"Marco Jansen","eco":8.42,"balls":612},
-    {"name":"Lockie Ferguson","eco":8.64,"balls":724},
-    {"name":"Xavier Bartlett","eco":8.82,"balls":312},
-    {"name":"Harprett Brar","eco":8.24,"balls":424}
-  ],
-  "RCB":[
-    {"name":"Josh Hazlewood","eco":7.84,"balls":824},
-    {"name":"Bhuvneshwar Kumar","eco":7.96,"balls":2856},
-    {"name":"Krunal Pandya","eco":7.62,"balls":1624},
-    {"name":"Yash Dayal","eco":8.48,"balls":712},
-    {"name":"Jacob Duffy","eco":8.12,"balls":312},
-    {"name":"Suyash Sharma","eco":8.24,"balls":412}
-  ],
-  "RR":[
-    {"name":"Yuzvendra Chahal","eco":7.68,"balls":3124},
-    {"name":"Ravindra Jadeja","eco":7.84,"balls":2212},
-    {"name":"Trent Boult","eco":7.82,"balls":1624},
-    {"name":"Sandeep Sharma","eco":8.24,"balls":1024},
-    {"name":"Yudhvir Singh Charak","eco":8.46,"balls":412},
-    {"name":"Wanindu Hasaranga","eco":8.36,"balls":624}
-  ],
-  "SRH":[
-    {"name":"Pat Cummins","eco":8.24,"balls":1624},
-    {"name":"Harshal Patel","eco":8.62,"balls":1856},
-    {"name":"Jaydev Unadkat","eco":8.84,"balls":1124},
-    {"name":"Brydon Carse","eco":8.96,"balls":312},
-    {"name":"Harsh Dubey","eco":8.14,"balls":412},
-    {"name":"Eshan Malinga","eco":9.12,"balls":212}
-  ]
+  "CSK":[{"name":"Noor Ahmad","eco":7.42,"balls":612,"role":"bowl"},{"name":"Khaleel Ahmed","eco":8.12,"balls":1248,"role":"bowl"},{"name":"Rahul Chahar","eco":7.84,"balls":1124,"role":"bowl"},{"name":"Mukesh Choudhary","eco":8.56,"balls":486,"role":"bowl"},{"name":"Anshul Kamboj","eco":7.96,"balls":342,"role":"bowl"},{"name":"Matt Henry","eco":8.24,"balls":412,"role":"bowl"}],
+  "DC":[{"name":"Kuldeep Yadav","eco":7.68,"balls":1342,"role":"bowl"},{"name":"Mitchell Starc","eco":8.42,"balls":1124,"role":"bowl"},{"name":"Axar Patel","eco":7.82,"balls":2156,"role":"bowl"},{"name":"T Natarajan","eco":8.18,"balls":1456,"role":"bowl"},{"name":"Mukesh Kumar","eco":8.34,"balls":612,"role":"bowl"},{"name":"Kyle Jamieson","eco":8.62,"balls":424,"role":"bowl"}],
+  "GT":[{"name":"Rashid Khan","eco":7.21,"balls":3165,"role":"bowl"},{"name":"Mohammed Siraj","eco":8.39,"balls":2412,"role":"bowl"},{"name":"Kagiso Rabada","eco":8.51,"balls":1989,"role":"bowl"},{"name":"Prasidh Krishna","eco":8.42,"balls":1621,"role":"bowl"},{"name":"Washington Sundar","eco":7.96,"balls":968,"role":"bowl"},{"name":"Jason Holder","eco":8.74,"balls":612,"role":"bowl"}],
+  "KKR":[{"name":"Sunil Narine","eco":6.88,"balls":4174,"role":"bowl"},{"name":"Varun Chakaravarthy","eco":7.42,"balls":1856,"role":"bowl"},{"name":"Matheesha Pathirana","eco":8.12,"balls":742,"role":"bowl"},{"name":"Vaibhav Arora","eco":8.68,"balls":624,"role":"bowl"},{"name":"Blessing Muzarabani","eco":8.82,"balls":312,"role":"bowl"},{"name":"Harshit Rana","eco":8.54,"balls":412,"role":"bowl"}],
+  "LSG":[{"name":"Mohsin Khan","eco":8.13,"balls":532,"role":"bowl"},{"name":"Mohammad Shami","eco":8.24,"balls":842,"role":"bowl"},{"name":"Avesh Khan","eco":8.62,"balls":1342,"role":"bowl"},{"name":"Mayank Yadav","eco":8.74,"balls":312,"role":"bowl"},{"name":"Wanindu Hasaranga","eco":8.36,"balls":624,"role":"bowl"},{"name":"Anrich Nortje","eco":8.94,"balls":412,"role":"bowl"}],
+  "MI":[{"name":"Jasprit Bumrah","eco":7.13,"balls":3249,"role":"bowl"},{"name":"Trent Boult","eco":7.82,"balls":1624,"role":"bowl"},{"name":"Deepak Chahar","eco":8.14,"balls":1124,"role":"bowl"},{"name":"Allah Ghazanfar","eco":7.56,"balls":412,"role":"bowl"},{"name":"Mitchell Santner","eco":7.84,"balls":624,"role":"bowl"},{"name":"Hardik Pandya","eco":9.12,"balls":1124,"role":"bowl"}],
+  "PBKS":[{"name":"Arshdeep Singh","eco":8.12,"balls":1856,"role":"bowl"},{"name":"Yuzvendra Chahal","eco":7.68,"balls":3124,"role":"bowl"},{"name":"Marco Jansen","eco":8.42,"balls":612,"role":"bowl"},{"name":"Lockie Ferguson","eco":8.64,"balls":724,"role":"bowl"},{"name":"Xavier Bartlett","eco":8.82,"balls":312,"role":"bowl"},{"name":"Harprett Brar","eco":8.24,"balls":424,"role":"bowl"}],
+  "RCB":[{"name":"Josh Hazlewood","eco":7.84,"balls":824,"role":"bowl"},{"name":"Bhuvneshwar Kumar","eco":7.96,"balls":2856,"role":"bowl"},{"name":"Krunal Pandya","eco":7.62,"balls":1624,"role":"bowl"},{"name":"Yash Dayal","eco":8.48,"balls":712,"role":"bowl"},{"name":"Jacob Duffy","eco":8.12,"balls":312,"role":"bowl"},{"name":"Suyash Sharma","eco":8.24,"balls":412,"role":"bowl"}],
+  "RR":[{"name":"Yuzvendra Chahal","eco":7.68,"balls":3124,"role":"bowl"},{"name":"Ravindra Jadeja","eco":7.84,"balls":2212,"role":"bowl"},{"name":"Trent Boult","eco":7.82,"balls":1624,"role":"bowl"},{"name":"Sandeep Sharma","eco":8.24,"balls":1024,"role":"bowl"},{"name":"Yudhvir Singh Charak","eco":8.46,"balls":412,"role":"bowl"},{"name":"Wanindu Hasaranga","eco":8.36,"balls":624,"role":"bowl"}],
+  "SRH":[{"name":"Pat Cummins","eco":8.24,"balls":1624,"role":"bowl"},{"name":"Harshal Patel","eco":8.62,"balls":1856,"role":"bowl"},{"name":"Jaydev Unadkat","eco":8.84,"balls":1124,"role":"bowl"},{"name":"Brydon Carse","eco":8.96,"balls":312,"role":"bowl"},{"name":"Harsh Dubey","eco":8.14,"balls":412,"role":"bowl"},{"name":"Eshan Malinga","eco":9.12,"balls":212,"role":"bowl"}]
 },
-
 "venue_stats":{"Wankhede Stadium, Mumbai":{"avg":173.2,"bf_pct":44.8,"chase_pct":55.2,"matches":115},"MA Chidambaram Stadium":{"avg":166.0,"bf_pct":52.8,"chase_pct":47.2,"matches":74},"Eden Gardens":{"avg":161.7,"bf_pct":41.2,"chase_pct":58.8,"matches":68},"M Chinnaswamy Stadium":{"avg":165.3,"bf_pct":42.0,"chase_pct":58.0,"matches":53},"Feroz Shah Kotla":{"avg":162.0,"bf_pct":45.8,"chase_pct":54.2,"matches":48},"Dubai International Cricket Stadium":{"avg":163.8,"bf_pct":48.8,"chase_pct":51.2,"matches":46},"Sawai Mansingh Stadium":{"avg":157.9,"bf_pct":34.1,"chase_pct":65.9,"matches":41},"Narendra Modi Stadium, Ahmedabad":{"avg":186.6,"bf_pct":48.5,"chase_pct":51.5,"matches":33},"Punjab Cricket Association Stadium, Mohali":{"avg":164.4,"bf_pct":50.0,"chase_pct":50.0,"matches":30},"Sheikh Zayed Stadium":{"avg":158.9,"bf_pct":40.7,"chase_pct":59.3,"matches":29},"Sharjah Cricket Stadium":{"avg":159.0,"bf_pct":35.7,"chase_pct":64.3,"matches":28},"Rajiv Gandhi International Stadium":{"avg":156.4,"bf_pct":37.5,"chase_pct":62.5,"matches":25},"Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium, Lucknow":{"avg":173.9,"bf_pct":40.9,"chase_pct":59.1,"matches":23},"Arun Jaitley Stadium, Delhi":{"avg":200.3,"bf_pct":54.5,"chase_pct":45.5,"matches":23}},
-
-"h2h_data":{"RCB_vs_SRH":{"team1":"RCB","team2":"SRH","t1_wins":12,"t2_wins":13,"history":[{"date":"2026-03-28","winner":"RCB","margin":"6 wkts"},{"date":"2025-05-23","winner":"SRH","margin":"42 runs"},{"date":"2024-04-25","winner":"RCB","margin":"35 runs"},{"date":"2024-04-15","winner":"SRH","margin":"25 runs"},{"date":"2023-05-18","winner":"RCB","margin":"8 wkts"},{"date":"2022-05-08","winner":"RCB","margin":"67 runs"},{"date":"2022-04-23","winner":"SRH","margin":"9 wkts"},{"date":"2021-10-06","winner":"SRH","margin":"4 runs"}]},"DC_vs_RCB":{"team1":"DC","team2":"RCB","t1_wins":12,"t2_wins":19,"history":[{"date":"2025-04-27","winner":"RCB","margin":"6 wkts"},{"date":"2025-04-10","winner":"DC","margin":"6 wkts"},{"date":"2024-05-12","winner":"RCB","margin":"47 runs"},{"date":"2023-05-06","winner":"DC","margin":"7 wkts"},{"date":"2023-04-15","winner":"RCB","margin":"23 runs"},{"date":"2022-04-16","winner":"RCB","margin":"16 runs"},{"date":"2021-10-08","winner":"RCB","margin":"7 wkts"},{"date":"2021-04-27","winner":"RCB","margin":"1 runs"}]},"KKR_vs_MI":{"team1":"KKR","team2":"MI","t1_wins":11,"t2_wins":25,"history":[{"date":"2026-03-29","winner":"MI","margin":"6 wkts"},{"date":"2025-03-31","winner":"MI","margin":"8 wkts"},{"date":"2024-05-11","winner":"KKR","margin":"18 runs"},{"date":"2024-05-03","winner":"KKR","margin":"24 runs"},{"date":"2023-04-16","winner":"MI","margin":"5 wkts"},{"date":"2022-05-09","winner":"KKR","margin":"52 runs"},{"date":"2022-04-06","winner":"KKR","margin":"5 wkts"},{"date":"2021-09-23","winner":"KKR","margin":"7 wkts"}]},"PBKS_vs_RCB":{"team1":"PBKS","team2":"RCB","t1_wins":18,"t2_wins":19,"history":[{"date":"2025-06-03","winner":"RCB","margin":"6 runs"},{"date":"2025-05-29","winner":"RCB","margin":"8 wkts"},{"date":"2025-04-20","winner":"RCB","margin":"7 wkts"},{"date":"2025-04-18","winner":"PBKS","margin":"5 wkts"},{"date":"2024-05-09","winner":"RCB","margin":"60 runs"},{"date":"2024-03-25","winner":"RCB","margin":"4 wkts"},{"date":"2023-04-20","winner":"RCB","margin":"24 runs"},{"date":"2022-05-13","winner":"PBKS","margin":"54 runs"}]},"MI_vs_SRH":{"team1":"MI","team2":"SRH","t1_wins":14,"t2_wins":10,"history":[{"date":"2025-04-23","winner":"MI","margin":"7 wkts"},{"date":"2025-04-17","winner":"MI","margin":"4 wkts"},{"date":"2024-05-06","winner":"MI","margin":"7 wkts"},{"date":"2024-03-27","winner":"SRH","margin":"31 runs"},{"date":"2023-05-21","winner":"MI","margin":"8 wkts"},{"date":"2023-04-18","winner":"MI","margin":"14 runs"},{"date":"2022-05-17","winner":"SRH","margin":"3 runs"},{"date":"2021-10-08","winner":"MI","margin":"42 runs"}]},"KKR_vs_PBKS":{"team1":"KKR","team2":"PBKS","t1_wins":21,"t2_wins":13,"history":[{"date":"2025-04-15","winner":"PBKS","margin":"16 runs"},{"date":"2024-04-26","winner":"PBKS","margin":"8 wkts"},{"date":"2023-05-08","winner":"KKR","margin":"5 wkts"},{"date":"2023-04-01","winner":"PBKS","margin":"7 runs"},{"date":"2022-04-01","winner":"KKR","margin":"6 wkts"},{"date":"2021-10-01","winner":"PBKS","margin":"5 wkts"},{"date":"2021-04-26","winner":"KKR","margin":"5 wkts"},{"date":"2020-10-26","winner":"PBKS","margin":"8 wkts"}]},"MI_vs_RCB":{"team1":"MI","team2":"RCB","t1_wins":19,"t2_wins":14,"history":[{"date":"2025-04-07","winner":"RCB","margin":"12 runs"},{"date":"2024-04-11","winner":"MI","margin":"7 wkts"},{"date":"2023-05-09","winner":"MI","margin":"6 wkts"},{"date":"2023-04-02","winner":"RCB","margin":"8 wkts"},{"date":"2022-04-09","winner":"RCB","margin":"7 wkts"},{"date":"2021-09-26","winner":"RCB","margin":"54 runs"},{"date":"2021-04-09","winner":"RCB","margin":"2 wkts"}]},"KKR_vs_SRH":{"team1":"KKR","team2":"SRH","t1_wins":19,"t2_wins":11,"history":[{"date":"2026-04-02","winner":"SRH","margin":"65 runs"},{"date":"2025-05-25","winner":"SRH","margin":"110 runs"},{"date":"2025-04-03","winner":"KKR","margin":"80 runs"},{"date":"2024-05-26","winner":"KKR","margin":"8 wkts"},{"date":"2024-05-21","winner":"KKR","margin":"8 wkts"},{"date":"2024-03-23","winner":"KKR","margin":"4 runs"},{"date":"2023-05-04","winner":"KKR","margin":"5 runs"},{"date":"2023-04-14","winner":"SRH","margin":"23 runs"}]},"DC_vs_PBKS":{"team1":"DC","team2":"PBKS","t1_wins":16,"t2_wins":17,"history":[{"date":"2025-05-24","winner":"DC","margin":"6 wkts"},{"date":"2024-03-23","winner":"PBKS","margin":"4 wkts"},{"date":"2023-05-17","winner":"DC","margin":"15 runs"},{"date":"2023-05-13","winner":"PBKS","margin":"31 runs"},{"date":"2022-05-16","winner":"DC","margin":"17 runs"},{"date":"2022-04-20","winner":"DC","margin":"9 wkts"},{"date":"2021-05-02","winner":"DC","margin":"7 wkts"},{"date":"2021-04-18","winner":"DC","margin":"6 wkts"}]},"DC_vs_KKR":{"team1":"DC","team2":"KKR","t1_wins":14,"t2_wins":19,"history":[{"date":"2025-04-29","winner":"KKR","margin":"14 runs"},{"date":"2024-04-29","winner":"KKR","margin":"7 wkts"},{"date":"2024-04-03","winner":"KKR","margin":"106 runs"},{"date":"2023-04-20","winner":"DC","margin":"4 wkts"},{"date":"2022-04-28","winner":"DC","margin":"4 wkts"},{"date":"2022-04-10","winner":"DC","margin":"44 runs"},{"date":"2021-10-13","winner":"KKR","margin":"3 wkts"},{"date":"2021-09-28","winner":"KKR","margin":"3 wkts"}]},"PBKS_vs_SRH":{"team1":"PBKS","team2":"SRH","t1_wins":7,"t2_wins":17,"history":[{"date":"2025-04-12","winner":"SRH","margin":"8 wkts"},{"date":"2024-05-19","winner":"SRH","margin":"4 wkts"},{"date":"2024-04-09","winner":"SRH","margin":"2 runs"},{"date":"2023-04-09","winner":"SRH","margin":"8 wkts"},{"date":"2022-05-22","winner":"PBKS","margin":"5 wkts"},{"date":"2022-04-17","winner":"SRH","margin":"7 wkts"},{"date":"2021-09-25","winner":"PBKS","margin":"5 runs"},{"date":"2021-04-21","winner":"SRH","margin":"9 wkts"}]},"DC_vs_SRH":{"team1":"DC","team2":"SRH","t1_wins":11,"t2_wins":13,"history":[{"date":"2025-03-30","winner":"DC","margin":"7 wkts"},{"date":"2024-04-20","winner":"SRH","margin":"67 runs"},{"date":"2023-04-29","winner":"SRH","margin":"9 runs"},{"date":"2023-04-24","winner":"DC","margin":"7 runs"},{"date":"2022-05-05","winner":"DC","margin":"21 runs"},{"date":"2021-09-22","winner":"DC","margin":"8 wkts"}]},"MI_vs_PBKS":{"team1":"MI","team2":"PBKS","t1_wins":17,"t2_wins":16,"history":[{"date":"2025-06-01","winner":"PBKS","margin":"5 wkts"},{"date":"2025-05-26","winner":"PBKS","margin":"7 wkts"},{"date":"2024-04-18","winner":"MI","margin":"9 runs"},{"date":"2023-05-03","winner":"MI","margin":"6 wkts"},{"date":"2023-04-22","winner":"PBKS","margin":"13 runs"},{"date":"2022-04-13","winner":"PBKS","margin":"12 runs"},{"date":"2021-09-28","winner":"MI","margin":"6 wkts"},{"date":"2021-04-23","winner":"PBKS","margin":"9 wkts"}]},"DC_vs_MI":{"team1":"DC","team2":"MI","t1_wins":16,"t2_wins":21,"history":[{"date":"2025-05-21","winner":"MI","margin":"59 runs"},{"date":"2025-04-13","winner":"MI","margin":"12 runs"},{"date":"2024-04-27","winner":"DC","margin":"10 runs"},{"date":"2024-04-07","winner":"MI","margin":"29 runs"},{"date":"2023-04-11","winner":"MI","margin":"6 wkts"},{"date":"2022-05-21","winner":"MI","margin":"5 wkts"},{"date":"2022-03-27","winner":"DC","margin":"4 wkts"},{"date":"2021-10-02","winner":"DC","margin":"4 wkts"}]},"KKR_vs_RCB":{"team1":"KKR","team2":"RCB","t1_wins":20,"t2_wins":15,"history":[{"date":"2025-03-22","winner":"RCB","margin":"7 wkts"},{"date":"2024-04-21","winner":"KKR","margin":"1 runs"},{"date":"2024-03-29","winner":"KKR","margin":"7 wkts"},{"date":"2023-04-26","winner":"KKR","margin":"21 runs"},{"date":"2023-04-06","winner":"KKR","margin":"81 runs"},{"date":"2022-03-30","winner":"RCB","margin":"3 wkts"},{"date":"2021-10-11","winner":"KKR","margin":"4 wkts"},{"date":"2021-09-20","winner":"KKR","margin":"9 wkts"}]},"CSK_vs_MI":{"team1":"CSK","team2":"MI","t1_wins":18,"t2_wins":21,"history":[{"date":"2025-04-20","winner":"MI","margin":"9 wkts"},{"date":"2025-03-23","winner":"CSK","margin":"4 wkts"},{"date":"2024-04-14","winner":"CSK","margin":"20 runs"},{"date":"2023-05-06","winner":"CSK","margin":"6 wkts"},{"date":"2023-04-08","winner":"CSK","margin":"7 wkts"},{"date":"2022-05-12","winner":"MI","margin":"5 wkts"},{"date":"2022-04-21","winner":"CSK","margin":"3 wkts"},{"date":"2021-09-19","winner":"CSK","margin":"20 runs"}]},"RR_vs_SRH":{"team1":"RR","team2":"SRH","t1_wins":9,"t2_wins":12,"history":[{"date":"2025-03-23","winner":"SRH","margin":"44 runs"},{"date":"2024-05-24","winner":"SRH","margin":"36 runs"},{"date":"2024-05-02","winner":"SRH","margin":"1 runs"},{"date":"2023-05-07","winner":"SRH","margin":"4 wkts"},{"date":"2023-04-02","winner":"RR","margin":"72 runs"},{"date":"2022-03-29","winner":"RR","margin":"61 runs"},{"date":"2021-09-27","winner":"SRH","margin":"7 wkts"},{"date":"2021-05-02","winner":"RR","margin":"55 runs"}]},"CSK_vs_KKR":{"team1":"CSK","team2":"KKR","t1_wins":20,"t2_wins":11,"history":[{"date":"2025-05-07","winner":"CSK","margin":"2 wkts"},{"date":"2025-04-11","winner":"KKR","margin":"8 wkts"},{"date":"2024-04-08","winner":"CSK","margin":"7 wkts"},{"date":"2023-05-14","winner":"KKR","margin":"6 wkts"},{"date":"2023-04-23","winner":"CSK","margin":"49 runs"},{"date":"2022-03-26","winner":"KKR","margin":"6 wkts"},{"date":"2021-10-15","winner":"CSK","margin":"27 runs"},{"date":"2021-09-26","winner":"CSK","margin":"2 wkts"}]},"DC_vs_RR":{"team1":"DC","team2":"RR","t1_wins":14,"t2_wins":15,"history":[{"date":"2024-05-07","winner":"DC","margin":"20 runs"},{"date":"2024-03-28","winner":"RR","margin":"12 runs"},{"date":"2023-04-08","winner":"RR","margin":"57 runs"},{"date":"2022-05-11","winner":"DC","margin":"8 wkts"},{"date":"2022-04-22","winner":"RR","margin":"15 runs"},{"date":"2021-09-25","winner":"DC","margin":"33 runs"},{"date":"2021-04-15","winner":"RR","margin":"3 wkts"}]},"RCB_vs_RR":{"team1":"RCB","team2":"RR","t1_wins":17,"t2_wins":14,"history":[{"date":"2025-04-24","winner":"RCB","margin":"11 runs"},{"date":"2025-04-13","winner":"RCB","margin":"9 wkts"},{"date":"2024-05-22","winner":"RR","margin":"4 wkts"},{"date":"2024-04-06","winner":"RR","margin":"6 wkts"},{"date":"2023-05-14","winner":"RCB","margin":"112 runs"},{"date":"2023-04-23","winner":"RCB","margin":"7 runs"},{"date":"2022-05-27","winner":"RR","margin":"7 wkts"},{"date":"2022-04-26","winner":"RR","margin":"29 runs"}]},"CSK_vs_PBKS":{"team1":"CSK","team2":"PBKS","t1_wins":16,"t2_wins":15,"history":[{"date":"2025-04-30","winner":"PBKS","margin":"4 wkts"},{"date":"2025-04-08","winner":"PBKS","margin":"18 runs"},{"date":"2024-05-05","winner":"CSK","margin":"28 runs"},{"date":"2024-05-01","winner":"PBKS","margin":"7 wkts"},{"date":"2023-04-30","winner":"PBKS","margin":"4 wkts"},{"date":"2022-04-25","winner":"PBKS","margin":"11 runs"},{"date":"2022-04-03","winner":"PBKS","margin":"54 runs"},{"date":"2021-10-07","winner":"PBKS","margin":"6 wkts"}]},"KKR_vs_RR":{"team1":"KKR","team2":"RR","t1_wins":16,"t2_wins":12,"history":[{"date":"2025-05-04","winner":"KKR","margin":"1 runs"},{"date":"2025-03-26","winner":"KKR","margin":"8 wkts"},{"date":"2024-04-16","winner":"RR","margin":"2 wkts"},{"date":"2023-05-11","winner":"RR","margin":"9 wkts"},{"date":"2022-05-02","winner":"KKR","margin":"7 wkts"},{"date":"2022-04-18","winner":"RR","margin":"7 runs"},{"date":"2021-10-07","winner":"KKR","margin":"86 runs"},{"date":"2021-04-24","winner":"RR","margin":"6 wkts"}]},"CSK_vs_RR":{"team1":"CSK","team2":"RR","t1_wins":16,"t2_wins":16,"history":[{"date":"2026-03-30","winner":"RR","margin":"8 wkts"},{"date":"2025-05-20","winner":"RR","margin":"6 wkts"},{"date":"2025-03-30","winner":"RR","margin":"6 runs"},{"date":"2024-05-12","winner":"CSK","margin":"5 wkts"},{"date":"2023-04-27","winner":"RR","margin":"32 runs"},{"date":"2023-04-12","winner":"RR","margin":"3 runs"},{"date":"2022-05-20","winner":"RR","margin":"5 wkts"},{"date":"2021-10-02","winner":"RR","margin":"7 wkts"}]},"CSK_vs_SRH":{"team1":"CSK","team2":"SRH","t1_wins":15,"t2_wins":7,"history":[{"date":"2025-04-25","winner":"SRH","margin":"5 wkts"},{"date":"2024-04-28","winner":"CSK","margin":"78 runs"},{"date":"2024-04-05","winner":"SRH","margin":"6 wkts"},{"date":"2023-04-21","winner":"CSK","margin":"7 wkts"},{"date":"2022-05-01","winner":"CSK","margin":"13 runs"},{"date":"2022-04-09","winner":"SRH","margin":"8 wkts"},{"date":"2021-09-30","winner":"CSK","margin":"6 wkts"},{"date":"2021-04-28","winner":"CSK","margin":"7 wkts"}]},"MI_vs_RR":{"team1":"MI","team2":"RR","t1_wins":16,"t2_wins":14,"history":[{"date":"2025-05-01","winner":"MI","margin":"100 runs"},{"date":"2024-04-22","winner":"RR","margin":"9 wkts"},{"date":"2024-04-01","winner":"RR","margin":"6 wkts"},{"date":"2023-04-30","winner":"MI","margin":"6 wkts"},{"date":"2022-04-30","winner":"MI","margin":"5 wkts"},{"date":"2022-04-02","winner":"RR","margin":"23 runs"},{"date":"2021-10-05","winner":"MI","margin":"8 wkts"},{"date":"2021-04-29","winner":"MI","margin":"7 wkts"}]},"CSK_vs_RCB":{"team1":"CSK","team2":"RCB","t1_wins":21,"t2_wins":13,"history":[{"date":"2025-05-03","winner":"RCB","margin":"2 runs"},{"date":"2025-03-28","winner":"RCB","margin":"50 runs"},{"date":"2024-05-18","winner":"RCB","margin":"27 runs"},{"date":"2024-03-22","winner":"CSK","margin":"6 wkts"},{"date":"2023-04-17","winner":"CSK","margin":"8 runs"},{"date":"2022-05-04","winner":"RCB","margin":"13 runs"},{"date":"2022-04-12","winner":"CSK","margin":"23 runs"},{"date":"2021-09-24","winner":"CSK","margin":"6 wkts"}]},"CSK_vs_DC":{"team1":"CSK","team2":"DC","t1_wins":19,"t2_wins":12,"history":[{"date":"2025-04-05","winner":"DC","margin":"25 runs"},{"date":"2024-03-31","winner":"DC","margin":"20 runs"},{"date":"2023-05-20","winner":"CSK","margin":"77 runs"},{"date":"2023-05-10","winner":"CSK","margin":"27 runs"},{"date":"2022-05-08","winner":"CSK","margin":"91 runs"},{"date":"2021-10-10","winner":"CSK","margin":"4 wkts"},{"date":"2021-10-04","winner":"DC","margin":"3 wkts"},{"date":"2021-04-10","winner":"DC","margin":"7 wkts"}]},"PBKS_vs_RR":{"team1":"PBKS","team2":"RR","t1_wins":12,"t2_wins":17,"history":[{"date":"2025-05-18","winner":"PBKS","margin":"10 runs"},{"date":"2025-04-05","winner":"RR","margin":"50 runs"},{"date":"2024-05-15","winner":"PBKS","margin":"5 wkts"},{"date":"2024-04-13","winner":"RR","margin":"3 wkts"},{"date":"2023-05-19","winner":"RR","margin":"4 wkts"},{"date":"2023-04-05","winner":"PBKS","margin":"5 runs"},{"date":"2022-05-07","winner":"RR","margin":"6 wkts"},{"date":"2021-09-21","winner":"RR","margin":"2 runs"}]},"GT_vs_LSG":{"team1":"GT","team2":"LSG","t1_wins":4,"t2_wins":3,"history":[{"date":"2025-05-22","winner":"LSG","margin":"33 runs"},{"date":"2025-04-12","winner":"LSG","margin":"6 wkts"},{"date":"2024-04-07","winner":"LSG","margin":"33 runs"},{"date":"2023-05-07","winner":"GT","margin":"56 runs"},{"date":"2023-04-22","winner":"GT","margin":"7 runs"},{"date":"2022-05-10","winner":"GT","margin":"62 runs"},{"date":"2022-03-28","winner":"GT","margin":"5 wkts"}]},"CSK_vs_LSG":{"team1":"CSK","team2":"LSG","t1_wins":2,"t2_wins":3,"history":[{"date":"2025-04-14","winner":"CSK","margin":"5 wkts"},{"date":"2024-04-23","winner":"LSG","margin":"6 wkts"},{"date":"2024-04-19","winner":"LSG","margin":"8 wkts"},{"date":"2023-04-03","winner":"CSK","margin":"12 runs"},{"date":"2022-03-31","winner":"LSG","margin":"6 wkts"}]},"DC_vs_GT":{"team1":"DC","team2":"GT","t1_wins":3,"t2_wins":4,"history":[{"date":"2025-05-18","winner":"GT","margin":"10 wkts"},{"date":"2025-04-19","winner":"GT","margin":"7 wkts"},{"date":"2024-04-24","winner":"DC","margin":"4 runs"},{"date":"2024-04-17","winner":"DC","margin":"6 wkts"},{"date":"2023-05-02","winner":"DC","margin":"5 runs"},{"date":"2023-04-04","winner":"GT","margin":"6 wkts"},{"date":"2022-04-02","winner":"GT","margin":"14 runs"}]},"LSG_vs_SRH":{"team1":"LSG","team2":"SRH","t1_wins":4,"t2_wins":2,"history":[{"date":"2025-05-19","winner":"SRH","margin":"6 wkts"},{"date":"2025-03-27","winner":"LSG","margin":"5 wkts"},{"date":"2024-05-08","winner":"SRH","margin":"10 wkts"},{"date":"2023-05-13","winner":"LSG","margin":"7 wkts"},{"date":"2023-04-07","winner":"LSG","margin":"5 wkts"},{"date":"2022-04-04","winner":"LSG","margin":"12 runs"}]},"DC_vs_LSG":{"team1":"DC","team2":"LSG","t1_wins":5,"t2_wins":3,"history":[{"date":"2026-04-01","winner":"DC","margin":"6 wkts"},{"date":"2025-04-22","winner":"DC","margin":"8 wkts"},{"date":"2025-03-24","winner":"DC","margin":"1 wkts"},{"date":"2024-05-14","winner":"DC","margin":"19 runs"},{"date":"2024-04-12","winner":"DC","margin":"6 wkts"},{"date":"2023-04-01","winner":"LSG","margin":"50 runs"},{"date":"2022-05-01","winner":"LSG","margin":"6 runs"},{"date":"2022-04-07","winner":"LSG","margin":"6 wkts"}]},"GT_vs_PBKS":{"team1":"GT","team2":"PBKS","t1_wins":3,"t2_wins":4,"history":[{"date":"2026-03-31","winner":"PBKS","margin":"3 wkts"},{"date":"2025-03-25","winner":"PBKS","margin":"11 runs"},{"date":"2024-04-21","winner":"GT","margin":"3 wkts"},{"date":"2024-04-04","winner":"PBKS","margin":"3 wkts"},{"date":"2023-04-13","winner":"GT","margin":"6 wkts"},{"date":"2022-05-03","winner":"PBKS","margin":"8 wkts"},{"date":"2022-04-08","winner":"GT","margin":"6 wkts"}]},"LSG_vs_RR":{"team1":"LSG","team2":"RR","t1_wins":2,"t2_wins":4,"history":[{"date":"2025-04-19","winner":"LSG","margin":"2 runs"},{"date":"2024-04-27","winner":"RR","margin":"7 wkts"},{"date":"2024-03-24","winner":"RR","margin":"20 runs"},{"date":"2023-04-19","winner":"LSG","margin":"10 runs"},{"date":"2022-05-15","winner":"RR","margin":"24 runs"},{"date":"2022-04-10","winner":"RR","margin":"3 runs"}]},"GT_vs_SRH":{"team1":"GT","team2":"SRH","t1_wins":5,"t2_wins":1,"history":[{"date":"2025-05-02","winner":"GT","margin":"38 runs"},{"date":"2025-04-06","winner":"GT","margin":"7 wkts"},{"date":"2024-03-31","winner":"GT","margin":"7 wkts"},{"date":"2023-05-15","winner":"GT","margin":"34 runs"},{"date":"2022-04-27","winner":"GT","margin":"5 wkts"},{"date":"2022-04-11","winner":"SRH","margin":"8 wkts"}]},"GT_vs_RR":{"team1":"GT","team2":"RR","t1_wins":6,"t2_wins":2,"history":[{"date":"2025-04-28","winner":"RR","margin":"8 wkts"},{"date":"2025-04-09","winner":"GT","margin":"58 runs"},{"date":"2024-04-10","winner":"GT","margin":"3 wkts"},{"date":"2023-05-05","winner":"GT","margin":"9 wkts"},{"date":"2023-04-16","winner":"RR","margin":"3 wkts"},{"date":"2022-05-29","winner":"GT","margin":"7 wkts"},{"date":"2022-05-24","winner":"GT","margin":"7 wkts"},{"date":"2022-04-14","winner":"GT","margin":"37 runs"}]},"LSG_vs_MI":{"team1":"LSG","team2":"MI","t1_wins":6,"t2_wins":2,"history":[{"date":"2025-04-27","winner":"MI","margin":"54 runs"},{"date":"2025-04-04","winner":"LSG","margin":"12 runs"},{"date":"2024-05-17","winner":"LSG","margin":"18 runs"},{"date":"2024-04-30","winner":"LSG","margin":"4 wkts"},{"date":"2023-05-24","winner":"MI","margin":"81 runs"},{"date":"2023-05-16","winner":"LSG","margin":"5 runs"},{"date":"2022-04-24","winner":"LSG","margin":"36 runs"},{"date":"2022-04-16","winner":"LSG","margin":"18 runs"}]},"CSK_vs_GT":{"team1":"CSK","team2":"GT","t1_wins":4,"t2_wins":4,"history":[{"date":"2025-05-25","winner":"CSK","margin":"83 runs"},{"date":"2024-05-10","winner":"GT","margin":"35 runs"},{"date":"2024-03-26","winner":"CSK","margin":"63 runs"},{"date":"2023-05-29","winner":"CSK","margin":"5 wkts"},{"date":"2023-05-23","winner":"CSK","margin":"15 runs"},{"date":"2023-03-31","winner":"GT","margin":"5 wkts"},{"date":"2022-05-15","winner":"GT","margin":"7 wkts"},{"date":"2022-04-17","winner":"GT","margin":"3 wkts"}]},"LSG_vs_RCB":{"team1":"LSG","team2":"RCB","t1_wins":2,"t2_wins":4,"history":[{"date":"2025-05-27","winner":"RCB","margin":"6 wkts"},{"date":"2024-04-02","winner":"LSG","margin":"28 runs"},{"date":"2023-05-01","winner":"RCB","margin":"18 runs"},{"date":"2023-04-10","winner":"LSG","margin":"1 wkts"},{"date":"2022-05-25","winner":"RCB","margin":"14 runs"},{"date":"2022-04-19","winner":"RCB","margin":"18 runs"}]},"GT_vs_KKR":{"team1":"GT","team2":"KKR","t1_wins":3,"t2_wins":1,"history":[{"date":"2025-04-21","winner":"GT","margin":"39 runs"},{"date":"2023-04-29","winner":"GT","margin":"7 wkts"},{"date":"2023-04-09","winner":"KKR","margin":"3 wkts"},{"date":"2022-04-23","winner":"GT","margin":"8 runs"}]},"LSG_vs_PBKS":{"team1":"LSG","team2":"PBKS","t1_wins":3,"t2_wins":3,"history":[{"date":"2025-05-04","winner":"PBKS","margin":"37 runs"},{"date":"2025-04-01","winner":"PBKS","margin":"8 wkts"},{"date":"2024-03-30","winner":"LSG","margin":"21 runs"},{"date":"2023-04-28","winner":"LSG","margin":"56 runs"},{"date":"2023-04-15","winner":"PBKS","margin":"2 wkts"},{"date":"2022-04-29","winner":"LSG","margin":"20 runs"}]},"GT_vs_RCB":{"team1":"GT","team2":"RCB","t1_wins":3,"t2_wins":3,"history":[{"date":"2025-04-02","winner":"GT","margin":"8 wkts"},{"date":"2024-05-04","winner":"RCB","margin":"4 wkts"},{"date":"2024-04-28","winner":"RCB","margin":"9 wkts"},{"date":"2023-05-21","winner":"GT","margin":"6 wkts"},{"date":"2022-05-19","winner":"RCB","margin":"8 wkts"},{"date":"2022-04-30","winner":"GT","margin":"6 wkts"}]},"GT_vs_MI":{"team1":"GT","team2":"MI","t1_wins":5,"t2_wins":3,"history":[{"date":"2025-05-30","winner":"MI","margin":"20 runs"},{"date":"2025-05-06","winner":"GT","margin":"3 wkts"},{"date":"2025-03-29","winner":"GT","margin":"36 runs"},{"date":"2024-03-24","winner":"GT","margin":"6 runs"},{"date":"2023-05-26","winner":"GT","margin":"62 runs"},{"date":"2023-05-12","winner":"MI","margin":"27 runs"},{"date":"2023-04-25","winner":"GT","margin":"55 runs"},{"date":"2022-05-06","winner":"MI","margin":"5 runs"}]},"KKR_vs_LSG":{"team1":"KKR","team2":"LSG","t1_wins":2,"t2_wins":4,"history":[{"date":"2025-04-08","winner":"LSG","margin":"4 runs"},{"date":"2024-05-05","winner":"KKR","margin":"98 runs"},{"date":"2024-04-14","winner":"KKR","margin":"8 wkts"},{"date":"2023-05-20","winner":"LSG","margin":"1 runs"},{"date":"2022-05-18","winner":"LSG","margin":"2 runs"},{"date":"2022-05-07","winner":"LSG","margin":"75 runs"}]}}
+"h2h_data":{"RCB_vs_SRH":{"team1":"RCB","team2":"SRH","t1_wins":12,"t2_wins":13,"history":[{"date":"2026-03-28","winner":"RCB","margin":"6 wkts"},{"date":"2025-05-23","winner":"SRH","margin":"42 runs"},{"date":"2024-04-25","winner":"RCB","margin":"35 runs"},{"date":"2024-04-15","winner":"SRH","margin":"25 runs"},{"date":"2023-05-18","winner":"RCB","margin":"8 wkts"},{"date":"2022-05-08","winner":"RCB","margin":"67 runs"}]},"DC_vs_RCB":{"team1":"DC","team2":"RCB","t1_wins":12,"t2_wins":19,"history":[{"date":"2025-04-27","winner":"RCB","margin":"6 wkts"},{"date":"2025-04-10","winner":"DC","margin":"6 wkts"},{"date":"2024-05-12","winner":"RCB","margin":"47 runs"},{"date":"2023-05-06","winner":"DC","margin":"7 wkts"},{"date":"2023-04-15","winner":"RCB","margin":"23 runs"},{"date":"2022-04-16","winner":"RCB","margin":"16 runs"}]},"KKR_vs_MI":{"team1":"KKR","team2":"MI","t1_wins":11,"t2_wins":25,"history":[{"date":"2026-03-29","winner":"MI","margin":"6 wkts"},{"date":"2025-03-31","winner":"MI","margin":"8 wkts"},{"date":"2024-05-11","winner":"KKR","margin":"18 runs"},{"date":"2024-05-03","winner":"KKR","margin":"24 runs"},{"date":"2023-04-16","winner":"MI","margin":"5 wkts"},{"date":"2022-05-09","winner":"KKR","margin":"52 runs"}]},"PBKS_vs_RCB":{"team1":"PBKS","team2":"RCB","t1_wins":18,"t2_wins":19,"history":[{"date":"2025-06-03","winner":"RCB","margin":"6 runs"},{"date":"2025-05-29","winner":"RCB","margin":"8 wkts"},{"date":"2025-04-20","winner":"RCB","margin":"7 wkts"},{"date":"2025-04-18","winner":"PBKS","margin":"5 wkts"},{"date":"2024-05-09","winner":"RCB","margin":"60 runs"},{"date":"2024-03-25","winner":"RCB","margin":"4 wkts"}]},"MI_vs_SRH":{"team1":"MI","team2":"SRH","t1_wins":14,"t2_wins":10,"history":[{"date":"2025-04-23","winner":"MI","margin":"7 wkts"},{"date":"2025-04-17","winner":"MI","margin":"4 wkts"},{"date":"2024-05-06","winner":"MI","margin":"7 wkts"},{"date":"2024-03-27","winner":"SRH","margin":"31 runs"},{"date":"2023-05-21","winner":"MI","margin":"8 wkts"},{"date":"2023-04-18","winner":"MI","margin":"14 runs"}]},"KKR_vs_PBKS":{"team1":"KKR","team2":"PBKS","t1_wins":21,"t2_wins":13,"history":[{"date":"2025-04-15","winner":"PBKS","margin":"16 runs"},{"date":"2024-04-26","winner":"PBKS","margin":"8 wkts"},{"date":"2023-05-08","winner":"KKR","margin":"5 wkts"},{"date":"2023-04-01","winner":"PBKS","margin":"7 runs"},{"date":"2022-04-01","winner":"KKR","margin":"6 wkts"},{"date":"2021-10-01","winner":"PBKS","margin":"5 wkts"}]},"MI_vs_RCB":{"team1":"MI","team2":"RCB","t1_wins":19,"t2_wins":14,"history":[{"date":"2025-04-07","winner":"RCB","margin":"12 runs"},{"date":"2024-04-11","winner":"MI","margin":"7 wkts"},{"date":"2023-05-09","winner":"MI","margin":"6 wkts"},{"date":"2023-04-02","winner":"RCB","margin":"8 wkts"},{"date":"2022-04-09","winner":"RCB","margin":"7 wkts"},{"date":"2021-09-26","winner":"RCB","margin":"54 runs"}]},"KKR_vs_SRH":{"team1":"KKR","team2":"SRH","t1_wins":19,"t2_wins":11,"history":[{"date":"2026-04-02","winner":"SRH","margin":"65 runs"},{"date":"2025-05-25","winner":"SRH","margin":"110 runs"},{"date":"2025-04-03","winner":"KKR","margin":"80 runs"},{"date":"2024-05-26","winner":"KKR","margin":"8 wkts"},{"date":"2024-05-21","winner":"KKR","margin":"8 wkts"},{"date":"2024-03-23","winner":"KKR","margin":"4 runs"}]},"DC_vs_PBKS":{"team1":"DC","team2":"PBKS","t1_wins":16,"t2_wins":17,"history":[{"date":"2025-05-24","winner":"DC","margin":"6 wkts"},{"date":"2024-03-23","winner":"PBKS","margin":"4 wkts"},{"date":"2023-05-17","winner":"DC","margin":"15 runs"},{"date":"2023-05-13","winner":"PBKS","margin":"31 runs"},{"date":"2022-05-16","winner":"DC","margin":"17 runs"},{"date":"2022-04-20","winner":"DC","margin":"9 wkts"}]},"DC_vs_KKR":{"team1":"DC","team2":"KKR","t1_wins":14,"t2_wins":19,"history":[{"date":"2025-04-29","winner":"KKR","margin":"14 runs"},{"date":"2024-04-29","winner":"KKR","margin":"7 wkts"},{"date":"2024-04-03","winner":"KKR","margin":"106 runs"},{"date":"2023-04-20","winner":"DC","margin":"4 wkts"},{"date":"2022-04-28","winner":"DC","margin":"4 wkts"},{"date":"2022-04-10","winner":"DC","margin":"44 runs"}]},"PBKS_vs_SRH":{"team1":"PBKS","team2":"SRH","t1_wins":7,"t2_wins":17,"history":[{"date":"2025-04-12","winner":"SRH","margin":"8 wkts"},{"date":"2024-05-19","winner":"SRH","margin":"4 wkts"},{"date":"2024-04-09","winner":"SRH","margin":"2 runs"},{"date":"2023-04-09","winner":"SRH","margin":"8 wkts"},{"date":"2022-05-22","winner":"PBKS","margin":"5 wkts"},{"date":"2022-04-17","winner":"SRH","margin":"7 wkts"}]},"DC_vs_SRH":{"team1":"DC","team2":"SRH","t1_wins":11,"t2_wins":13,"history":[{"date":"2025-03-30","winner":"DC","margin":"7 wkts"},{"date":"2024-04-20","winner":"SRH","margin":"67 runs"},{"date":"2023-04-29","winner":"SRH","margin":"9 runs"},{"date":"2023-04-24","winner":"DC","margin":"7 runs"},{"date":"2022-05-05","winner":"DC","margin":"21 runs"},{"date":"2021-09-22","winner":"DC","margin":"8 wkts"}]},"MI_vs_PBKS":{"team1":"MI","team2":"PBKS","t1_wins":17,"t2_wins":16,"history":[{"date":"2025-06-01","winner":"PBKS","margin":"5 wkts"},{"date":"2025-05-26","winner":"PBKS","margin":"7 wkts"},{"date":"2024-04-18","winner":"MI","margin":"9 runs"},{"date":"2023-05-03","winner":"MI","margin":"6 wkts"},{"date":"2023-04-22","winner":"PBKS","margin":"13 runs"},{"date":"2022-04-13","winner":"PBKS","margin":"12 runs"}]},"DC_vs_MI":{"team1":"DC","team2":"MI","t1_wins":16,"t2_wins":21,"history":[{"date":"2025-05-21","winner":"MI","margin":"59 runs"},{"date":"2025-04-13","winner":"MI","margin":"12 runs"},{"date":"2024-04-27","winner":"DC","margin":"10 runs"},{"date":"2024-04-07","winner":"MI","margin":"29 runs"},{"date":"2023-04-11","winner":"MI","margin":"6 wkts"},{"date":"2022-05-21","winner":"MI","margin":"5 wkts"}]},"KKR_vs_RCB":{"team1":"KKR","team2":"RCB","t1_wins":20,"t2_wins":15,"history":[{"date":"2025-03-22","winner":"RCB","margin":"7 wkts"},{"date":"2024-04-21","winner":"KKR","margin":"1 runs"},{"date":"2024-03-29","winner":"KKR","margin":"7 wkts"},{"date":"2023-04-26","winner":"KKR","margin":"21 runs"},{"date":"2023-04-06","winner":"KKR","margin":"81 runs"},{"date":"2022-03-30","winner":"RCB","margin":"3 wkts"}]},"CSK_vs_MI":{"team1":"CSK","team2":"MI","t1_wins":18,"t2_wins":21,"history":[{"date":"2025-04-20","winner":"MI","margin":"9 wkts"},{"date":"2025-03-23","winner":"CSK","margin":"4 wkts"},{"date":"2024-04-14","winner":"CSK","margin":"20 runs"},{"date":"2023-05-06","winner":"CSK","margin":"6 wkts"},{"date":"2023-04-08","winner":"CSK","margin":"7 wkts"},{"date":"2022-05-12","winner":"MI","margin":"5 wkts"}]},"RR_vs_SRH":{"team1":"RR","team2":"SRH","t1_wins":9,"t2_wins":12,"history":[{"date":"2025-03-23","winner":"SRH","margin":"44 runs"},{"date":"2024-05-24","winner":"SRH","margin":"36 runs"},{"date":"2024-05-02","winner":"SRH","margin":"1 runs"},{"date":"2023-05-07","winner":"SRH","margin":"4 wkts"},{"date":"2023-04-02","winner":"RR","margin":"72 runs"},{"date":"2022-03-29","winner":"RR","margin":"61 runs"}]},"CSK_vs_KKR":{"team1":"CSK","team2":"KKR","t1_wins":20,"t2_wins":11,"history":[{"date":"2025-05-07","winner":"CSK","margin":"2 wkts"},{"date":"2025-04-11","winner":"KKR","margin":"8 wkts"},{"date":"2024-04-08","winner":"CSK","margin":"7 wkts"},{"date":"2023-05-14","winner":"KKR","margin":"6 wkts"},{"date":"2023-04-23","winner":"CSK","margin":"49 runs"},{"date":"2022-03-26","winner":"KKR","margin":"6 wkts"}]},"DC_vs_RR":{"team1":"DC","team2":"RR","t1_wins":14,"t2_wins":15,"history":[{"date":"2024-05-07","winner":"DC","margin":"20 runs"},{"date":"2024-03-28","winner":"RR","margin":"12 runs"},{"date":"2023-04-08","winner":"RR","margin":"57 runs"},{"date":"2022-05-11","winner":"DC","margin":"8 wkts"},{"date":"2022-04-22","winner":"RR","margin":"15 runs"},{"date":"2021-09-25","winner":"DC","margin":"33 runs"}]},"RCB_vs_RR":{"team1":"RCB","team2":"RR","t1_wins":17,"t2_wins":14,"history":[{"date":"2025-04-24","winner":"RCB","margin":"11 runs"},{"date":"2025-04-13","winner":"RCB","margin":"9 wkts"},{"date":"2024-05-22","winner":"RR","margin":"4 wkts"},{"date":"2024-04-06","winner":"RR","margin":"6 wkts"},{"date":"2023-05-14","winner":"RCB","margin":"112 runs"},{"date":"2023-04-23","winner":"RCB","margin":"7 runs"}]},"CSK_vs_PBKS":{"team1":"CSK","team2":"PBKS","t1_wins":16,"t2_wins":15,"history":[{"date":"2025-04-30","winner":"PBKS","margin":"4 wkts"},{"date":"2025-04-08","winner":"PBKS","margin":"18 runs"},{"date":"2024-05-05","winner":"CSK","margin":"28 runs"},{"date":"2024-05-01","winner":"PBKS","margin":"7 wkts"},{"date":"2023-04-30","winner":"PBKS","margin":"4 wkts"},{"date":"2022-04-25","winner":"PBKS","margin":"11 runs"}]},"KKR_vs_RR":{"team1":"KKR","team2":"RR","t1_wins":16,"t2_wins":12,"history":[{"date":"2025-05-04","winner":"KKR","margin":"1 runs"},{"date":"2025-03-26","winner":"KKR","margin":"8 wkts"},{"date":"2024-04-16","winner":"RR","margin":"2 wkts"},{"date":"2023-05-11","winner":"RR","margin":"9 wkts"},{"date":"2022-05-02","winner":"KKR","margin":"7 wkts"},{"date":"2022-04-18","winner":"RR","margin":"7 runs"}]},"CSK_vs_RR":{"team1":"CSK","team2":"RR","t1_wins":16,"t2_wins":16,"history":[{"date":"2026-03-30","winner":"RR","margin":"8 wkts"},{"date":"2025-05-20","winner":"RR","margin":"6 wkts"},{"date":"2025-03-30","winner":"RR","margin":"6 runs"},{"date":"2024-05-12","winner":"CSK","margin":"5 wkts"},{"date":"2023-04-27","winner":"RR","margin":"32 runs"},{"date":"2023-04-12","winner":"RR","margin":"3 runs"}]},"CSK_vs_SRH":{"team1":"CSK","team2":"SRH","t1_wins":15,"t2_wins":7,"history":[{"date":"2025-04-25","winner":"SRH","margin":"5 wkts"},{"date":"2024-04-28","winner":"CSK","margin":"78 runs"},{"date":"2024-04-05","winner":"SRH","margin":"6 wkts"},{"date":"2023-04-21","winner":"CSK","margin":"7 wkts"},{"date":"2022-05-01","winner":"CSK","margin":"13 runs"},{"date":"2022-04-09","winner":"SRH","margin":"8 wkts"}]},"MI_vs_RR":{"team1":"MI","team2":"RR","t1_wins":16,"t2_wins":14,"history":[{"date":"2025-05-01","winner":"MI","margin":"100 runs"},{"date":"2024-04-22","winner":"RR","margin":"9 wkts"},{"date":"2024-04-01","winner":"RR","margin":"6 wkts"},{"date":"2023-04-30","winner":"MI","margin":"6 wkts"},{"date":"2022-04-30","winner":"MI","margin":"5 wkts"},{"date":"2022-04-02","winner":"RR","margin":"23 runs"}]},"CSK_vs_RCB":{"team1":"CSK","team2":"RCB","t1_wins":21,"t2_wins":13,"history":[{"date":"2025-05-03","winner":"RCB","margin":"2 runs"},{"date":"2025-03-28","winner":"RCB","margin":"50 runs"},{"date":"2024-05-18","winner":"RCB","margin":"27 runs"},{"date":"2024-03-22","winner":"CSK","margin":"6 wkts"},{"date":"2023-04-17","winner":"CSK","margin":"8 runs"},{"date":"2022-05-04","winner":"RCB","margin":"13 runs"}]},"CSK_vs_DC":{"team1":"CSK","team2":"DC","t1_wins":19,"t2_wins":12,"history":[{"date":"2025-04-05","winner":"DC","margin":"25 runs"},{"date":"2024-03-31","winner":"DC","margin":"20 runs"},{"date":"2023-05-20","winner":"CSK","margin":"77 runs"},{"date":"2023-05-10","winner":"CSK","margin":"27 runs"},{"date":"2022-05-08","winner":"CSK","margin":"91 runs"},{"date":"2021-10-10","winner":"CSK","margin":"4 wkts"}]},"PBKS_vs_RR":{"team1":"PBKS","team2":"RR","t1_wins":12,"t2_wins":17,"history":[{"date":"2025-05-18","winner":"PBKS","margin":"10 runs"},{"date":"2025-04-05","winner":"RR","margin":"50 runs"},{"date":"2024-05-15","winner":"PBKS","margin":"5 wkts"},{"date":"2024-04-13","winner":"RR","margin":"3 wkts"},{"date":"2023-05-19","winner":"RR","margin":"4 wkts"},{"date":"2023-04-05","winner":"PBKS","margin":"5 runs"}]},"GT_vs_LSG":{"team1":"GT","team2":"LSG","t1_wins":4,"t2_wins":3,"history":[{"date":"2025-05-22","winner":"LSG","margin":"33 runs"},{"date":"2025-04-12","winner":"LSG","margin":"6 wkts"},{"date":"2024-04-07","winner":"LSG","margin":"33 runs"},{"date":"2023-05-07","winner":"GT","margin":"56 runs"},{"date":"2023-04-22","winner":"GT","margin":"7 runs"},{"date":"2022-05-10","winner":"GT","margin":"62 runs"}]},"CSK_vs_LSG":{"team1":"CSK","team2":"LSG","t1_wins":2,"t2_wins":3,"history":[{"date":"2025-04-14","winner":"CSK","margin":"5 wkts"},{"date":"2024-04-23","winner":"LSG","margin":"6 wkts"},{"date":"2024-04-19","winner":"LSG","margin":"8 wkts"},{"date":"2023-04-03","winner":"CSK","margin":"12 runs"},{"date":"2022-03-31","winner":"LSG","margin":"6 wkts"}]},"DC_vs_GT":{"team1":"DC","team2":"GT","t1_wins":3,"t2_wins":4,"history":[{"date":"2025-05-18","winner":"GT","margin":"10 wkts"},{"date":"2025-04-19","winner":"GT","margin":"7 wkts"},{"date":"2024-04-24","winner":"DC","margin":"4 runs"},{"date":"2024-04-17","winner":"DC","margin":"6 wkts"},{"date":"2023-05-02","winner":"DC","margin":"5 runs"},{"date":"2023-04-04","winner":"GT","margin":"6 wkts"}]},"LSG_vs_SRH":{"team1":"LSG","team2":"SRH","t1_wins":4,"t2_wins":2,"history":[{"date":"2025-05-19","winner":"SRH","margin":"6 wkts"},{"date":"2025-03-27","winner":"LSG","margin":"5 wkts"},{"date":"2024-05-08","winner":"SRH","margin":"10 wkts"},{"date":"2023-05-13","winner":"LSG","margin":"7 wkts"},{"date":"2023-04-07","winner":"LSG","margin":"5 wkts"},{"date":"2022-04-04","winner":"LSG","margin":"12 runs"}]},"DC_vs_LSG":{"team1":"DC","team2":"LSG","t1_wins":5,"t2_wins":3,"history":[{"date":"2026-04-01","winner":"DC","margin":"6 wkts"},{"date":"2025-04-22","winner":"DC","margin":"8 wkts"},{"date":"2025-03-24","winner":"DC","margin":"1 wkts"},{"date":"2024-05-14","winner":"DC","margin":"19 runs"},{"date":"2024-04-12","winner":"DC","margin":"6 wkts"},{"date":"2023-04-01","winner":"LSG","margin":"50 runs"}]},"GT_vs_PBKS":{"team1":"GT","team2":"PBKS","t1_wins":3,"t2_wins":4,"history":[{"date":"2026-03-31","winner":"PBKS","margin":"3 wkts"},{"date":"2025-03-25","winner":"PBKS","margin":"11 runs"},{"date":"2024-04-21","winner":"GT","margin":"3 wkts"},{"date":"2024-04-04","winner":"PBKS","margin":"3 wkts"},{"date":"2023-04-13","winner":"GT","margin":"6 wkts"},{"date":"2022-05-03","winner":"PBKS","margin":"8 wkts"}]},"LSG_vs_RR":{"team1":"LSG","team2":"RR","t1_wins":2,"t2_wins":4,"history":[{"date":"2025-04-19","winner":"LSG","margin":"2 runs"},{"date":"2024-04-27","winner":"RR","margin":"7 wkts"},{"date":"2024-03-24","winner":"RR","margin":"20 runs"},{"date":"2023-04-19","winner":"LSG","margin":"10 runs"},{"date":"2022-05-15","winner":"RR","margin":"24 runs"},{"date":"2022-04-10","winner":"RR","margin":"3 runs"}]},"GT_vs_SRH":{"team1":"GT","team2":"SRH","t1_wins":5,"t2_wins":1,"history":[{"date":"2025-05-02","winner":"GT","margin":"38 runs"},{"date":"2025-04-06","winner":"GT","margin":"7 wkts"},{"date":"2024-03-31","winner":"GT","margin":"7 wkts"},{"date":"2023-05-15","winner":"GT","margin":"34 runs"},{"date":"2022-04-27","winner":"GT","margin":"5 wkts"},{"date":"2022-04-11","winner":"SRH","margin":"8 wkts"}]},"GT_vs_RR":{"team1":"GT","team2":"RR","t1_wins":6,"t2_wins":2,"history":[{"date":"2025-04-28","winner":"RR","margin":"8 wkts"},{"date":"2025-04-09","winner":"GT","margin":"58 runs"},{"date":"2024-04-10","winner":"GT","margin":"3 wkts"},{"date":"2023-05-05","winner":"GT","margin":"9 wkts"},{"date":"2023-04-16","winner":"RR","margin":"3 wkts"},{"date":"2022-05-29","winner":"GT","margin":"7 wkts"}]},"LSG_vs_MI":{"team1":"LSG","team2":"MI","t1_wins":6,"t2_wins":2,"history":[{"date":"2025-04-27","winner":"MI","margin":"54 runs"},{"date":"2025-04-04","winner":"LSG","margin":"12 runs"},{"date":"2024-05-17","winner":"LSG","margin":"18 runs"},{"date":"2024-04-30","winner":"LSG","margin":"4 wkts"},{"date":"2023-05-24","winner":"MI","margin":"81 runs"},{"date":"2023-05-16","winner":"LSG","margin":"5 runs"}]},"CSK_vs_GT":{"team1":"CSK","team2":"GT","t1_wins":4,"t2_wins":4,"history":[{"date":"2025-05-25","winner":"CSK","margin":"83 runs"},{"date":"2024-05-10","winner":"GT","margin":"35 runs"},{"date":"2024-03-26","winner":"CSK","margin":"63 runs"},{"date":"2023-05-29","winner":"CSK","margin":"5 wkts"},{"date":"2023-05-23","winner":"CSK","margin":"15 runs"},{"date":"2023-03-31","winner":"GT","margin":"5 wkts"}]},"LSG_vs_RCB":{"team1":"LSG","team2":"RCB","t1_wins":2,"t2_wins":4,"history":[{"date":"2025-05-27","winner":"RCB","margin":"6 wkts"},{"date":"2024-04-02","winner":"LSG","margin":"28 runs"},{"date":"2023-05-01","winner":"RCB","margin":"18 runs"},{"date":"2023-04-10","winner":"LSG","margin":"1 wkts"},{"date":"2022-05-25","winner":"RCB","margin":"14 runs"},{"date":"2022-04-19","winner":"RCB","margin":"18 runs"}]},"GT_vs_KKR":{"team1":"GT","team2":"KKR","t1_wins":3,"t2_wins":1,"history":[{"date":"2025-04-21","winner":"GT","margin":"39 runs"},{"date":"2023-04-29","winner":"GT","margin":"7 wkts"},{"date":"2023-04-09","winner":"KKR","margin":"3 wkts"},{"date":"2022-04-23","winner":"GT","margin":"8 runs"}]},"LSG_vs_PBKS":{"team1":"LSG","team2":"PBKS","t1_wins":3,"t2_wins":3,"history":[{"date":"2025-05-04","winner":"PBKS","margin":"37 runs"},{"date":"2025-04-01","winner":"PBKS","margin":"8 wkts"},{"date":"2024-03-30","winner":"LSG","margin":"21 runs"},{"date":"2023-04-28","winner":"LSG","margin":"56 runs"},{"date":"2023-04-15","winner":"PBKS","margin":"2 wkts"},{"date":"2022-04-29","winner":"LSG","margin":"20 runs"}]},"GT_vs_RCB":{"team1":"GT","team2":"RCB","t1_wins":3,"t2_wins":3,"history":[{"date":"2025-04-02","winner":"GT","margin":"8 wkts"},{"date":"2024-05-04","winner":"RCB","margin":"4 wkts"},{"date":"2024-04-28","winner":"RCB","margin":"9 wkts"},{"date":"2023-05-21","winner":"GT","margin":"6 wkts"},{"date":"2022-05-19","winner":"RCB","margin":"8 wkts"},{"date":"2022-04-30","winner":"GT","margin":"6 wkts"}]},"GT_vs_MI":{"team1":"GT","team2":"MI","t1_wins":5,"t2_wins":3,"history":[{"date":"2025-05-30","winner":"MI","margin":"20 runs"},{"date":"2025-05-06","winner":"GT","margin":"3 wkts"},{"date":"2025-03-29","winner":"GT","margin":"36 runs"},{"date":"2024-03-24","winner":"GT","margin":"6 runs"},{"date":"2023-05-26","winner":"GT","margin":"62 runs"},{"date":"2023-05-12","winner":"MI","margin":"27 runs"}]},"KKR_vs_LSG":{"team1":"KKR","team2":"LSG","t1_wins":2,"t2_wins":4,"history":[{"date":"2025-04-08","winner":"LSG","margin":"4 runs"},{"date":"2024-05-05","winner":"KKR","margin":"98 runs"},{"date":"2024-04-14","winner":"KKR","margin":"8 wkts"},{"date":"2023-05-20","winner":"LSG","margin":"1 runs"},{"date":"2022-05-18","winner":"LSG","margin":"2 runs"},{"date":"2022-05-07","winner":"LSG","margin":"75 runs"}]},"MI_vs_GT":{"team1":"MI","team2":"GT","t1_wins":3,"t2_wins":5,"history":[{"date":"2025-05-30","winner":"MI","margin":"20 runs"},{"date":"2025-05-06","winner":"GT","margin":"3 wkts"},{"date":"2025-03-29","winner":"GT","margin":"36 runs"},{"date":"2024-03-24","winner":"GT","margin":"6 runs"},{"date":"2023-05-26","winner":"GT","margin":"62 runs"},{"date":"2023-05-12","winner":"MI","margin":"27 runs"}]}}
 };
 
 const TEAMS=[
@@ -524,76 +371,150 @@ const TEAMS=[
   {id:'GT',full:'Gujarat Titans'},{id:'LSG',full:'Lucknow Super Giants'},
 ];
 
-let state={teamA:'MI',teamB:'CSK',venue:Object.keys(REAL_DATA.venue_stats)[0],pitch:'flat',tossWinner:'a',tossDecision:'bat',matchTime:'day',chaseTarget:175,chasingTeam:'a'};
+// Track absent players: {teamId: Set of player names}
+const absentPlayers = {A: new Set(), B: new Set()};
+
+let state={teamA:'MI',teamB:'GT',venue:Object.keys(REAL_DATA.venue_stats)[0],pitch:'flat',tossWinner:'a',tossDecision:'bat',matchTime:'day',chaseTarget:175,chasingTeam:'a'};
 
 function getTeamStats(id){return REAL_DATA.team_stats[id]||{win_pct:50,matches:0,wins:0,chase_win_pct:50};}
+
 function getH2H(a,b){
-  const k1=a+'_vs_'+b,k2=b+'_vs_'+a;
-  if(REAL_DATA.h2h_data[k1])return{wins_a:REAL_DATA.h2h_data[k1].t1_wins,wins_b:REAL_DATA.h2h_data[k1].t2_wins,history:REAL_DATA.h2h_data[k1].history};
-  if(REAL_DATA.h2h_data[k2])return{wins_a:REAL_DATA.h2h_data[k2].t2_wins,wins_b:REAL_DATA.h2h_data[k2].t1_wins,history:REAL_DATA.h2h_data[k2].history};
+  const k1=a+'_vs_'+b, k2=b+'_vs_'+a;
+  if(REAL_DATA.h2h_data[k1]) return{wins_a:REAL_DATA.h2h_data[k1].t1_wins,wins_b:REAL_DATA.h2h_data[k1].t2_wins,history:REAL_DATA.h2h_data[k1].history};
+  if(REAL_DATA.h2h_data[k2]) return{wins_a:REAL_DATA.h2h_data[k2].t2_wins,wins_b:REAL_DATA.h2h_data[k2].t1_wins,history:REAL_DATA.h2h_data[k2].history};
   return{wins_a:0,wins_b:0,history:[]};
 }
 
-function renderTeamSelectors(){
-  ['A','B'].forEach(side=>{
-    const other=side==='A'?state.teamB:state.teamA;
-    const el=document.getElementById('selector'+side);
-    el.innerHTML=TEAMS.filter(t=>t.id!==other).map(t=>`<div class="team-chip${state['team'+side]===t.id?' active':''}" onclick="selectTeam('${side}','${t.id}')">${t.id}</div>`).join('');
-  });
-  updateTeamPanels();updateH2H();renderBattles();
+function getActivePlayers(teamId, side, type) {
+  const all = type==='bat' ? (REAL_DATA.team_batters[teamId]||[]) : (REAL_DATA.team_bowlers[teamId]||[]);
+  const absent = absentPlayers[side];
+  return all.filter(p => !absent.has(p.name));
 }
 
-function selectTeam(side,id){
-  if(side==='A'){if(id===state.teamB)return;state.teamA=id;}
-  else{if(id===state.teamA)return;state.teamB=id;}
+function getAbsentPlayers(teamId, side, type) {
+  const all = type==='bat' ? (REAL_DATA.team_batters[teamId]||[]) : (REAL_DATA.team_bowlers[teamId]||[]);
+  return all.filter(p => absentPlayers[side].has(p.name));
+}
+
+function toggleAbsent(side, playerName) {
+  const set = absentPlayers[side];
+  if(set.has(playerName)) set.delete(playerName);
+  else set.add(playerName);
+  const teamId = side==='A' ? state.teamA : state.teamB;
+  renderPlayers(teamId, side);
+}
+
+function calcImpact(teamId, side) {
+  const allBat = REAL_DATA.team_batters[teamId]||[];
+  const allBow = REAL_DATA.team_bowlers[teamId]||[];
+  const activeBat = getActivePlayers(teamId, side, 'bat');
+  const activeBow = getActivePlayers(teamId, side, 'bowl');
+
+  const fullAvgSR = allBat.length ? allBat.reduce((s,b)=>s+b.sr,0)/allBat.length : 140;
+  const activeAvgSR = activeBat.length ? activeBat.reduce((s,b)=>s+b.sr,0)/activeBat.length : 140;
+  const srDrop = fullAvgSR - activeAvgSR;
+
+  const fullAvgEco = allBow.length ? allBow.reduce((s,b)=>s+b.eco,0)/allBow.length : 8.5;
+  const activeAvgEco = activeBow.length ? activeBow.reduce((s,b)=>s+b.eco,0)/activeBow.length : 8.5;
+  const ecoDrop = activeAvgEco - fullAvgEco;
+
+  return {srDrop: srDrop.toFixed(1), ecoDrop: ecoDrop.toFixed(1), activeSR: activeAvgSR.toFixed(1), activeEco: activeAvgEco.toFixed(1)};
+}
+
+function renderPlayers(teamId, side) {
+  const p = side.toLowerCase();
+  const batters = REAL_DATA.team_batters[teamId]||[];
+  const bowlers = REAL_DATA.team_bowlers[teamId]||[];
+  const absent = absentPlayers[side];
+
+  document.getElementById(p+'-batters').innerHTML = batters.map(b => {
+    const isAbsent = absent.has(b.name);
+    return `<div class="player-row${isAbsent?' absent':''}" onclick="toggleAbsent('${side}','${b.name.replace(/'/g,"\\'")}')">
+      <span class="player-name">${b.name}${isAbsent?'<span class="absent-tag">ABSENT</span>':''}</span>
+      <span class="player-stat">SR ${b.sr} · ${b.runs}r</span>
+    </div>`;
+  }).join('') || '<div style="font-size:11px;color:var(--text-muted);padding:4px 0">No data</div>';
+
+  document.getElementById(p+'-bowlers').innerHTML = bowlers.map(b => {
+    const isAbsent = absent.has(b.name);
+    return `<div class="player-row${isAbsent?' absent':''}" onclick="toggleAbsent('${side}','${b.name.replace(/'/g,"\\'")}')">
+      <span class="player-name">${b.name}${isAbsent?'<span class="absent-tag">ABSENT</span>':''}</span>
+      <span class="player-stat">Eco ${b.eco}</span>
+    </div>`;
+  }).join('') || '<div style="font-size:11px;color:var(--text-muted);padding:4px 0">No data</div>';
+
+  // Show impact of absences
+  const impact = calcImpact(teamId, side);
+  const absentBatters = getAbsentPlayers(teamId, side, 'bat');
+  const absentBowlers = getAbsentPlayers(teamId, side, 'bowl');
+
+  const batImpactEl = document.getElementById(p+'-batting-impact');
+  const bowImpactEl = document.getElementById(p+'-bowling-impact');
+
+  if(absentBatters.length > 0 && parseFloat(impact.srDrop) > 0.5) {
+    batImpactEl.innerHTML = `<div class="absent-impact">⚠ Batting SR drops by ${impact.srDrop} pts → effective avg SR now ${impact.activeSR}</div>`;
+  } else {
+    batImpactEl.innerHTML = '';
+  }
+
+  if(absentBowlers.length > 0 && parseFloat(impact.ecoDrop) > 0.05) {
+    bowImpactEl.innerHTML = `<div class="absent-impact">⚠ Economy rises by ${impact.ecoDrop} → effective avg eco now ${impact.activeEco}</div>`;
+  } else {
+    bowImpactEl.innerHTML = '';
+  }
+}
+
+function renderTeamSelectors() {
+  ['A','B'].forEach(side => {
+    const other = side==='A' ? state.teamB : state.teamA;
+    const el = document.getElementById('selector'+side);
+    el.innerHTML = TEAMS.filter(t=>t.id!==other).map(t =>
+      `<div class="team-chip${state['team'+side]===t.id?' active':''}" onclick="selectTeam('${side}','${t.id}')">${t.id}</div>`
+    ).join('');
+  });
+  updateTeamPanels();
+  updateH2H();
+  renderBattles();
+}
+
+function selectTeam(side, id) {
+  if(side==='A'){if(id===state.teamB)return; state.teamA=id;}
+  else{if(id===state.teamA)return; state.teamB=id;}
+  absentPlayers[side] = new Set(); // clear absences on team change
   renderTeamSelectors();
 }
 
-function renderPlayers(teamId,side){
-  const batters=REAL_DATA.team_batters[teamId]||[];
-  const bowlers=REAL_DATA.team_bowlers[teamId]||[];
-  const p=side.toLowerCase();
-  document.getElementById(p+'-batters').innerHTML=batters.slice(0,4).map(b=>`<div class="player-row"><span class="player-name">${b.name}</span><span class="player-stat">SR ${b.sr} · ${b.runs}r</span></div>`).join('')||'<div style="font-size:11px;color:var(--text-muted);padding:4px 0">No data</div>';
-  document.getElementById(p+'-bowlers').innerHTML=bowlers.slice(0,4).map(b=>`<div class="player-row"><span class="player-name">${b.name}</span><span class="player-stat">Eco ${b.eco}</span></div>`).join('')||'<div style="font-size:11px;color:var(--text-muted);padding:4px 0">No data</div>';
-}
-
 function getRecentFormLabel(score){
-  if(score>=70)return'🔥 Hot';
-  if(score>=55)return'📈 Good';
-  if(score>=42)return'➡ Average';
-  return'📉 Poor';
+  if(score>=70) return '🔥 Hot';
+  if(score>=55) return '📈 Good';
+  if(score>=42) return '➡ Average';
+  return '📉 Poor';
 }
 
-function updateTeamPanels(){
-  const sa=getTeamStats(state.teamA),sb=getTeamStats(state.teamB);
-  // All-time
+function updateTeamPanels() {
+  const sa=getTeamStats(state.teamA), sb=getTeamStats(state.teamB);
   document.getElementById('a-winpct').textContent=sa.win_pct+'%';
   document.getElementById('a-matches').textContent=sa.matches+' IPL matches';
   document.getElementById('a-chase').textContent=sa.chase_win_pct+'%';
   document.getElementById('b-winpct').textContent=sb.win_pct+'%';
   document.getElementById('b-matches').textContent=sb.matches+' IPL matches';
   document.getElementById('b-chase').textContent=sb.chase_win_pct+'%';
-  // Recent form score
   document.getElementById('a-form').textContent=sa.recent_form;
   document.getElementById('a-form-sub').textContent=getRecentFormLabel(sa.recent_form);
   document.getElementById('b-form').textContent=sb.recent_form;
   document.getElementById('b-form-sub').textContent=getRecentFormLabel(sb.recent_form);
-  // Last full season (2025)
-  const a25=sa.seasons&&sa.seasons['2025'];
-  const b25=sb.seasons&&sb.seasons['2025'];
+  const a25=sa.seasons&&sa.seasons['2025'], b25=sb.seasons&&sb.seasons['2025'];
   document.getElementById('a-last').textContent=a25?`${a25.w}-${a25.l}`:'—';
-  document.getElementById('a-last-sub').textContent='IPL 2025';
   document.getElementById('b-last').textContent=b25?`${b25.w}-${b25.l}`:'—';
-  document.getElementById('b-last-sub').textContent='IPL 2025';
-  // Chase labels
   document.getElementById('a-chase-lbl').textContent=sa.chase_win_pct+'%';
   document.getElementById('b-chase-lbl').textContent=sb.chase_win_pct+'%';
   document.getElementById('prob-la').textContent=TEAMS.find(t=>t.id===state.teamA)?.full||state.teamA;
   document.getElementById('prob-lb').textContent=TEAMS.find(t=>t.id===state.teamB)?.full||state.teamB;
-  renderPlayers(state.teamA,'A');renderPlayers(state.teamB,'B');
+  renderPlayers(state.teamA,'A');
+  renderPlayers(state.teamB,'B');
 }
 
-function updateH2H(){
+function updateH2H() {
   const h=getH2H(state.teamA,state.teamB);
   const total=(h.wins_a+h.wins_b)||1;
   const pctA=Math.round(h.wins_a/total*100);
@@ -608,32 +529,32 @@ function updateH2H(){
   document.getElementById('h2h-history').innerHTML=h.history.slice(0,5).map(r=>{
     const wc=r.winner===state.teamA?'var(--gold)':'var(--teal)';
     return`<div class="h2h-row"><span style="color:${wc};font-weight:500">${r.winner}</span><span style="color:var(--text-muted)">${r.margin}</span><span style="color:var(--text-muted)">${r.date}</span></div>`;
-  }).join('')||'<div style="font-size:11px;color:var(--text-muted);padding:4px 0">No head-to-head data</div>';
+  }).join('')||'<div style="font-size:11px;color:var(--text-muted);padding:4px 0">No H2H data</div>';
 }
 
-function initVenues(){
+function initVenues() {
   const sel=document.getElementById('venueSelect');
   sel.innerHTML=Object.keys(REAL_DATA.venue_stats).map(v=>`<option value="${v}">${v}</option>`).join('');
   state.venue=Object.keys(REAL_DATA.venue_stats)[0];
   updateVenue();
 }
 
-function updateVenue(){
-  const v=document.getElementById('venueSelect').value;state.venue=v;
-  const vs=REAL_DATA.venue_stats[v];if(!vs)return;
+function updateVenue() {
+  const v=document.getElementById('venueSelect').value; state.venue=v;
+  const vs=REAL_DATA.venue_stats[v]; if(!vs) return;
   document.getElementById('v-avg').textContent=vs.avg+' runs';
   document.getElementById('v-bf').textContent=vs.bf_pct+'%';
   document.getElementById('v-chase').textContent=vs.chase_pct+'%';
   document.getElementById('v-matches').textContent=vs.matches;
   const vl=v.toLowerCase();
   let pitch='flat';
-  if(vl.includes('chepauk')||vl.includes('chidambaram'))pitch='spin';
-  else if(vl.includes('chinnaswamy')||vl.includes('wankhede'))pitch='flat';
-  else if(vl.includes('kotla')||vl.includes('jaitley')||vl.includes('delhi'))pitch='pace';
-  else if(vl.includes('eden'))pitch='spin';
+  if(vl.includes('chepauk')||vl.includes('chidambaram')) pitch='spin';
+  else if(vl.includes('chinnaswamy')||vl.includes('wankhede')) pitch='flat';
+  else if(vl.includes('kotla')||vl.includes('jaitley')||vl.includes('delhi')) pitch='pace';
+  else if(vl.includes('eden')) pitch='spin';
   document.querySelectorAll('.pitch-opt').forEach(e=>e.classList.remove('active'));
   const pEl=document.querySelector(`.pitch-opt[onclick*="'${pitch}'"]`);
-  if(pEl)pEl.classList.add('active');
+  if(pEl) pEl.classList.add('active');
   state.pitch=pitch;
 }
 
@@ -643,8 +564,8 @@ function setDecision(d,el){state.tossDecision=d;document.querySelectorAll('.dec-
 function setTime(t,el){state.matchTime=t;document.querySelectorAll('.dec-btn').forEach(e=>{if(e.id.startsWith('time-'))e.classList.remove('active')});el.classList.add('active');}
 function setChasingTeam(s,el){state.chasingTeam=s;document.querySelectorAll('.dec-btn').forEach(e=>{if(e.id.startsWith('chase-team-'))e.classList.remove('active')});el.classList.add('active');}
 function updateChase(){
-  const t=parseInt(document.getElementById('chaseTarget').value)||0;state.chaseTarget=t;
-  const vs=REAL_DATA.venue_stats[state.venue];const avg=vs?vs.avg:170;
+  const t=parseInt(document.getElementById('chaseTarget').value)||0; state.chaseTarget=t;
+  const vs=REAL_DATA.venue_stats[state.venue]; const avg=vs?vs.avg:170;
   let tag,cls;
   if(t<150){tag='Easy chase';cls='tag-easy';}
   else if(t<175){tag='Moderate';cls='tag-moderate';}
@@ -655,48 +576,37 @@ function updateChase(){
 
 function sigmoid(x){return 1/(1+Math.exp(-x));}
 
-// Recent form: weighted win% across last 3 seasons
-// 2026 partial (×3 weight), 2025 (×2.5), 2024 (×2), 2023 (×1), 2022 (×0.5)
 function getWeightedFormPct(teamId){
   const s=REAL_DATA.team_stats[teamId]?.seasons||{};
-  const wts={'2026':3,'2025':2.5,'2024':2,'2023':1,'2022':0.5,'2021':0.3};
-  let totalW=0,weightedWinPct=0;
+  const wts={'2026':4,'2025':3,'2024':2,'2023':1,'2022':0.5,'2021':0.2};
+  let totalW=0, weightedWinPct=0;
   for(const [yr,wt] of Object.entries(wts)){
-    if(s[yr]){
-      const tot=s[yr].w+s[yr].l;
-      if(tot>0){weightedWinPct+=wt*(s[yr].w/tot);totalW+=wt;}
-    }
+    if(s[yr]){const tot=s[yr].w+s[yr].l;if(tot>0){weightedWinPct+=wt*(s[yr].w/tot);totalW+=wt;}}
   }
   return totalW>0?(weightedWinPct/totalW)*100:50;
 }
 
 function computeWinProb(){
-  const sa=getTeamStats(state.teamA),sb=getTeamStats(state.teamB);
-  const h=getH2H(state.teamA,state.teamB);
+  const sa=getTeamStats(state.teamA), sb=getTeamStats(state.teamB);
   const vs=REAL_DATA.venue_stats[state.venue]||{avg:170,bf_pct:50,chase_pct:50};
-  const batA=REAL_DATA.team_batters[state.teamA]||[];
-  const batB=REAL_DATA.team_batters[state.teamB]||[];
-  const bowA=REAL_DATA.team_bowlers[state.teamA]||[];
-  const bowB=REAL_DATA.team_bowlers[state.teamB]||[];
-  const avgSR_A=batA.length?batA.reduce((s,b)=>s+b.sr,0)/batA.length:130;
-  const avgSR_B=batB.length?batB.reduce((s,b)=>s+b.sr,0)/batB.length:130;
-  const avgEco_A=bowA.length?bowA.reduce((s,b)=>s+b.eco,0)/bowA.length:8.5;
-  const avgEco_B=bowB.length?bowB.reduce((s,b)=>s+b.eco,0)/bowB.length:8.5;
 
-  // Weighted recent form % (2024–2026 heavily weighted)
+  const activeBatA=getActivePlayers(state.teamA,'A','bat');
+  const activeBatB=getActivePlayers(state.teamB,'B','bat');
+  const activeBowA=getActivePlayers(state.teamA,'A','bowl');
+  const activeBowB=getActivePlayers(state.teamB,'B','bowl');
+
+  const avgSR_A=activeBatA.length?activeBatA.reduce((s,b)=>s+b.sr,0)/activeBatA.length:130;
+  const avgSR_B=activeBatB.length?activeBatB.reduce((s,b)=>s+b.sr,0)/activeBatB.length:130;
+  const avgEco_A=activeBowA.length?activeBowA.reduce((s,b)=>s+b.eco,0)/activeBowA.length:8.5;
+  const avgEco_B=activeBowB.length?activeBowB.reduce((s,b)=>s+b.eco,0)/activeBowB.length:8.5;
+
   const rfA=getWeightedFormPct(state.teamA);
   const rfB=getWeightedFormPct(state.teamB);
 
-  // Recent form score (0–100) for display
-  const rfScoreA=sa.recent_form||50;
-  const rfScoreB=sb.recent_form||50;
-
   const feats={};
 
-  // Recent form — HIGHEST weight (replaces old overall_form)
   feats.recent_form=((rfA-rfB)/100)*2.8;
 
-  // Last 2 seasons H2H (only 2024+2025+2026 results)
   const h2hAll=getH2H(state.teamA,state.teamB);
   const recentHistory=(h2hAll.history||[]).filter(r=>r.date>='2024-01-01');
   const recentWinsA=recentHistory.filter(r=>r.winner===state.teamA).length;
@@ -704,60 +614,131 @@ function computeWinProb(){
   const recentTotal=(recentWinsA+recentWinsB)||1;
   feats.recent_h2h=((recentWinsA/recentTotal)-0.5)*2.2;
 
-  // All-time H2H (lower weight now)
   const h2hTotal=(h2hAll.wins_a+h2hAll.wins_b)||1;
-  feats.h2h=((h2hAll.wins_a/h2hTotal)-0.5)*1.0;
+  feats.h2h=((h2hAll.wins_a/h2hTotal)-0.5)*0.8;
 
-  // Batting & bowling (current squad quality)
   feats.batting=(avgSR_A-avgSR_B)/80;
   feats.bowling=(avgEco_B-avgEco_A)/3;
 
-  // Chase ability
+  const absentBatA=[...absentPlayers.A].filter(n=>(REAL_DATA.team_batters[state.teamA]||[]).find(p=>p.name===n));
+  const absentBatB=[...absentPlayers.B].filter(n=>(REAL_DATA.team_batters[state.teamB]||[]).find(p=>p.name===n));
+  const absentBowA=[...absentPlayers.A].filter(n=>(REAL_DATA.team_bowlers[state.teamA]||[]).find(p=>p.name===n));
+  const absentBowB=[...absentPlayers.B].filter(n=>(REAL_DATA.team_bowlers[state.teamB]||[]).find(p=>p.name===n));
+
+  const batA=REAL_DATA.team_batters[state.teamA]||[];
+  const batB=REAL_DATA.team_batters[state.teamB]||[];
+  const bowA=REAL_DATA.team_bowlers[state.teamA]||[];
+  const bowB=REAL_DATA.team_bowlers[state.teamB]||[];
+
+  let absencePenaltyA=0, absencePenaltyB=0;
+  absentBatA.forEach(n=>{const p=batA.find(x=>x.name===n);if(p) absencePenaltyA+=p.sr/1000;});
+  absentBatB.forEach(n=>{const p=batB.find(x=>x.name===n);if(p) absencePenaltyB+=p.sr/1000;});
+  absentBowA.forEach(n=>{const p=bowA.find(x=>x.name===n);if(p&&p.eco<8.5) absencePenaltyA+=(8.5-p.eco)/10;});
+  absentBowB.forEach(n=>{const p=bowB.find(x=>x.name===n);if(p&&p.eco<8.5) absencePenaltyB+=(8.5-p.eco)/10;});
+  feats.absence_impact=(absencePenaltyB-absencePenaltyA)*1.5;
+
   const isChaseA=state.chasingTeam==='a';
   const chaseDiff=(state.chaseTarget-vs.avg)/vs.avg;
   feats.chase=isChaseA?((sa.chase_win_pct-sb.chase_win_pct)/100)*1.2-chaseDiff*0.6:((sb.chase_win_pct-sa.chase_win_pct)/100)*1.2+chaseDiff*0.6;
 
-  // Venue
   const vBF=(vs.bf_pct-50)/100;
   feats.venue=isChaseA?-vBF:vBF;
 
-  // Pitch
   const pitchMod={flat:0,pace:0.08,spin:-0.05,swing:0.07,dry:-0.1};
   feats.pitch=pitchMod[state.pitch]||0;
 
-  // Toss
-  const tossAdv=state.tossWinner==='a'?0.12:-0.12;
-  const decAdv=state.tossDecision==='field'?0.08:-0.04;
+  const tossAdv=state.tossWinner==='a'?0.06:-0.06;
+  const decAdv=state.tossDecision==='field'?0.04:-0.02;
   feats.toss=tossAdv+decAdv;
 
-  // Day/Night
   feats.conditions=state.matchTime==='night'&&isChaseA?0.1:0;
 
   const logit=Object.values(feats).reduce((a,b)=>a+b,0);
   const pA=Math.round(sigmoid(logit*2.2)*100);
-  return{pA,pB:100-pA,feats,rfA,rfB,recentWinsA,recentWinsB,recentTotal};
+  return{pA,pB:100-pA,feats,rfA,rfB};
 }
 
-function runPrediction(){
+async function fetchAIAnalysis(matchContext) {
+  const prompt = `You are an expert IPL cricket analyst. Analyze this upcoming IPL 2026 match and give a sharp, confident prediction in 3-4 sentences. Be specific about key factors. No generic statements.
+
+Match: ${matchContext.teamA} vs ${matchContext.teamB}
+Venue: ${matchContext.venue}
+Pitch: ${matchContext.pitch}
+Toss: ${matchContext.tossWinner} won, chose to ${matchContext.tossDecision}
+Target: ${matchContext.chaseTarget} runs, ${matchContext.chasingTeam} chasing
+Time: ${matchContext.matchTime === 'night' ? 'Day/Night (dew likely)' : 'Day match'}
+
+Team A (${matchContext.teamA}) absent players: ${matchContext.absentA.length > 0 ? matchContext.absentA.join(', ') : 'None'}
+Team B (${matchContext.teamB}) absent players: ${matchContext.absentB.length > 0 ? matchContext.absentB.join(', ') : 'None'}
+
+Model prediction: ${matchContext.teamA} ${matchContext.pA}% vs ${matchContext.teamB} ${matchContext.pB}%
+
+Recent form: ${matchContext.teamA} weighted win rate ${matchContext.rfA.toFixed(1)}%, ${matchContext.teamB} ${matchContext.rfB.toFixed(1)}%
+
+H2H last 5: ${matchContext.h2h.history.slice(0,5).map(h=>h.winner+' ('+h.margin+')').join(', ')}
+
+${matchContext.absentA.length > 0 || matchContext.absentB.length > 0 ? `Key absences to factor in: ${[...matchContext.absentA.map(p=>p+' ('+matchContext.teamA+')'), ...matchContext.absentB.map(p=>p+' ('+matchContext.teamB+')')].join(', ')}` : ''}
+
+Give your analysis as plain text (no bullet points, no headers). Be direct and mention specific players by name.`;
+
+  const response = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 1000,
+      messages: [{role: "user", content: prompt}]
+    })
+  });
+  const data = await response.json();
+  return data.content?.[0]?.text || "Analysis unavailable.";
+}
+
+async function runPrediction() {
   const btn=document.getElementById('predictBtn');
   btn.innerHTML='<span class="loading-spinner"></span> ANALYSING...';
   btn.disabled=true;
-  setTimeout(()=>{
-    btn.innerHTML='<span>🏏</span> PREDICT WINNER';btn.disabled=false;
-    const{pA,pB,feats}=computeWinProb();
-    showResult(pA,pB,feats);
-    renderBattles();
-  },1200);
+
+  const {pA,pB,feats,rfA,rfB}=computeWinProb();
+
+  showResult(pA,pB,feats,true);
+  renderBattles();
+
+  const h2h=getH2H(state.teamA,state.teamB);
+  const matchContext={
+    teamA: state.teamA, teamB: state.teamB,
+    venue: state.venue, pitch: state.pitch,
+    tossWinner: state.tossWinner==='a'?state.teamA:state.teamB,
+    tossDecision: state.tossDecision,
+    chaseTarget: state.chaseTarget,
+    chasingTeam: state.chasingTeam==='a'?state.teamA:state.teamB,
+    matchTime: state.matchTime,
+    absentA: [...absentPlayers.A],
+    absentB: [...absentPlayers.B],
+    pA, pB, rfA, rfB, h2h
+  };
+
+  btn.innerHTML='<span>🏏</span> PREDICT WINNER';
+  btn.disabled=false;
+
+  try {
+    const aiText = await fetchAIAnalysis(matchContext);
+    document.getElementById('ai-analysis-content').innerHTML = `<p style="margin:0;line-height:1.7;color:var(--text-dim)">${aiText}</p>`;
+  } catch(e) {
+    document.getElementById('ai-analysis-content').innerHTML = `<p style="margin:0;color:var(--text-muted);font-size:12px">Analysis unavailable. Model stats shown above.</p>`;
+  }
 }
 
-function showResult(pA,pB,feats){
+function showResult(pA,pB,feats,aiLoading) {
   const ta=TEAMS.find(t=>t.id===state.teamA);
   const tb=TEAMS.find(t=>t.id===state.teamB);
   const winnerTeam=pA>=pB?ta:tb;
   const winnerPct=Math.max(pA,pB);
+
   document.getElementById('resultWinner').textContent=winnerTeam.full;
   document.getElementById('resultWinner').className='result-winner '+(pA>=pB?'gold':'teal');
-  document.getElementById('resultConf').textContent=`Predicted winner with ${winnerPct}% confidence · Recent form weighted · 2026 squads`;
+  document.getElementById('resultConf').textContent=`Predicted winner · ${winnerPct}% confidence · Absence-adjusted · 2026 squads`;
+
   setTimeout(()=>{
     document.getElementById('prob-bar-a').style.width=pA+'%';
     document.getElementById('prob-bar-a').textContent=pA+'%';
@@ -765,11 +746,22 @@ function showResult(pA,pB,feats){
     document.getElementById('prob-la').textContent=ta.full;
     document.getElementById('prob-lb').textContent=tb.full;
   },100);
+
+  const abWarnEl = document.getElementById('absent-warning-box');
+  const allAbsent = [...absentPlayers.A].map(n=>n+' ('+state.teamA+')')
+    .concat([...absentPlayers.B].map(n=>n+' ('+state.teamB+')'));
+  if(allAbsent.length > 0) {
+    abWarnEl.innerHTML = `<div class="absent-warning">⚠ ABSENT: ${allAbsent.join(' · ')} — prediction adjusted for missing players</div>`;
+  } else {
+    abWarnEl.innerHTML = '';
+  }
+
   const featLabels=[
     {key:'recent_form',label:'Recent form 2024–26 ⭐',color:'var(--gold)'},
     {key:'recent_h2h',label:'H2H last 2 seasons ⭐',color:'var(--red)'},
-    {key:'batting',label:'Batting SR (squad)',color:'#64BEFF'},
-    {key:'bowling',label:'Bowling eco (squad)',color:'#34D399'},
+    {key:'absence_impact',label:'Player absences 🚨',color:'#FF6B6B'},
+    {key:'batting',label:'Batting SR (active squad)',color:'#64BEFF'},
+    {key:'bowling',label:'Bowling eco (active squad)',color:'#34D399'},
     {key:'h2h',label:'All-time H2H',color:'#A78BFA'},
     {key:'chase',label:'Chase ability',color:'var(--teal)'},
     {key:'venue',label:'Venue stats',color:'#FB923C'},
@@ -781,163 +773,105 @@ function showResult(pA,pB,feats){
     const pct=Math.round(Math.abs(val)/maxAbs*100);
     const favours=val>0?`Favours ${state.teamA}`:val<0?`Favours ${state.teamB}`:'Even';
     const barColor=val>0?'var(--gold)':val<0?'var(--teal)':'var(--text-muted)';
-    return`<div class="feat-row"><div class="feat-dot" style="background:${f.color}"></div><span style="min-width:140px;color:var(--text-dim);font-size:11px">${f.label}</span><div class="feat-bar-bg"><div class="feat-bar-fill" style="width:0%;background:${barColor}" data-w="${pct}"></div></div><span class="feat-pct" style="color:${barColor}">${favours}</span></div>`;
+    return`<div class="feat-row"><div class="feat-dot" style="background:${f.color}"></div><span style="min-width:150px;color:var(--text-dim);font-size:11px">${f.label}</span><div class="feat-bar-bg"><div class="feat-bar-fill" style="width:0%;background:${barColor}" data-w="${pct}"></div></div><span class="feat-pct" style="color:${barColor}">${favours}</span></div>`;
   }).join('');
   setTimeout(()=>document.querySelectorAll('.feat-bar-fill').forEach(b=>b.style.width=b.dataset.w+'%'),200);
 
-  const sa=getTeamStats(state.teamA),sb=getTeamStats(state.teamB);
-  const h=getH2H(state.teamA,state.teamB);
-  const rfA=getWeightedFormPct(state.teamA).toFixed(1);
-  const rfB=getWeightedFormPct(state.teamB).toFixed(1);
-  const insights=[];
-  if(Math.abs(feats.recent_form)>0.4)insights.push(`<strong>Recent form is decisive</strong> — ${parseFloat(rfA)>parseFloat(rfB)?state.teamA:state.teamB} has a weighted 2024–26 win rate of ${Math.max(rfA,rfB)}% vs ${Math.min(rfA,rfB)}%. That gap is significant.`);
-  if(Math.abs(feats.recent_h2h)>0.3){const rw=feats.recent_h2h>0?state.teamA:state.teamB;insights.push(`<strong>Recent H2H edge</strong> — ${rw} has dominated this fixture over the past 2 seasons. Old records count for less now.`);}
-  if(state.chaseTarget>190)insights.push(`<strong>Tough target</strong> of ${state.chaseTarget} runs — only ${Math.min(sa.chase_win_pct,sb.chase_win_pct).toFixed(0)}–${Math.max(sa.chase_win_pct,sb.chase_win_pct).toFixed(0)}% of IPL chases succeed at this range.`);
-  if(state.matchTime==='night')insights.push(`<strong>Dew factor</strong> in D/N match boosts the chasing team's odds in the 2nd innings.`);
-  if(insights.length===0)insights.push(`<strong>Balanced contest</strong> — both teams are evenly matched on recent form. Key player performances will decide this one.`);
-  document.getElementById('insightBox').innerHTML=insights[0];
+  if(aiLoading) {
+    document.getElementById('ai-analysis-content').innerHTML = `<div class="ai-thinking">Analysing this match<span class="thinking-dots"><span>.</span><span>.</span><span>.</span></span></div>`;
+  }
 
   const h2=getH2H(state.teamA,state.teamB);
   document.getElementById('historyList').innerHTML=h2.history.slice(0,6).map(r=>{
     const wc=r.winner===state.teamA?'var(--gold)':'var(--teal)';
     const loser=r.winner===state.teamA?state.teamB:state.teamA;
     return`<div class="history-row"><span style="color:${wc};font-weight:500">${r.winner}</span><span style="color:var(--text-dim)">beat ${loser}</span><span style="color:var(--text-muted);font-family:'JetBrains Mono',monospace;font-size:11px">${r.margin}</span><span style="color:var(--text-muted);font-size:11px">${r.date}</span></div>`;
-  }).join('')||'<div style="font-size:12px;color:var(--text-muted);padding:6px 0">No head-to-head history found</div>';
+  }).join('')||'<div style="font-size:12px;color:var(--text-muted);padding:6px 0">No H2H history found</div>';
 
   const card=document.getElementById('resultCard');
-  card.style.display='block';card.classList.add('result-animate');
+  card.style.display='block';
   card.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// ─── PLAYER BATTLES DATA (IPL 2021–2026) ───
-// Format: {batter, bowler, runs, balls, dismissals, sr, label}
-// label: 'threat' = batter dominates, 'bunny' = bowler dominates, 'contest' = even
-const BATTLES = [
-  // Virat Kohli matchups
+// ─── PLAYER BATTLES ───
+const BATTLES=[
   {batter:"Virat Kohli",batterTeam:"RCB",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:112,balls:76,dismissals:4,sr:147.4,label:"contest",insight:"Kohli scores freely but Bumrah has the last laugh 4 times. Pure IPL gold."},
-  {batter:"Virat Kohli",batterTeam:"RCB",bowler:"Rashid Khan",bowlerTeam:"GT",runs:58,balls:48,dismissals:5,sr:120.8,label:"bunny",insight:"Rashid owns Kohli — 5 dismissals and a SR under 125. A rare chink in Kohli's armour."},
-  {batter:"Virat Kohli",batterTeam:"RCB",bowler:"Yuzvendra Chahal",bowlerTeam:"RR",runs:84,balls:58,dismissals:3,sr:144.8,label:"contest",insight:"Ex-teammates, now rivals. Kohli has the edge in runs but Chahal has claimed him 3 times."},
-  {batter:"Virat Kohli",batterTeam:"RCB",bowler:"Kuldeep Yadav",bowlerTeam:"DC",runs:42,balls:38,dismissals:4,sr:110.5,label:"bunny",insight:"Kuldeep's wrong'un has foxed Kohli 4 times. One of IPL's most intriguing duels."},
+  {batter:"Virat Kohli",batterTeam:"RCB",bowler:"Rashid Khan",bowlerTeam:"GT",runs:58,balls:48,dismissals:5,sr:120.8,label:"bunny",insight:"Rashid owns Kohli — 5 dismissals and SR under 125. A rare chink in Kohli's armour."},
   {batter:"Virat Kohli",batterTeam:"RCB",bowler:"Arshdeep Singh",bowlerTeam:"PBKS",runs:96,balls:62,dismissals:2,sr:154.8,label:"threat",insight:"Kohli has punished Arshdeep repeatedly — SR of 155 with only 2 dismissals."},
-  // Rohit Sharma matchups
-  {batter:"Rohit Sharma",batterTeam:"MI",bowler:"Rashid Khan",bowlerTeam:"GT",runs:48,balls:42,dismissals:5,sr:114.3,label:"bunny",insight:"Rashid's leg-spin has been Rohit's nemesis — 5 dismissals and a subdued SR of 114."},
-  {batter:"Rohit Sharma",batterTeam:"MI",bowler:"Arshdeep Singh",bowlerTeam:"PBKS",runs:62,balls:44,dismissals:4,sr:140.9,label:"contest",insight:"Arshdeep swings it early and has dismissed Rohit 4 times despite decent runs."},
+  {batter:"Rohit Sharma",batterTeam:"MI",bowler:"Rashid Khan",bowlerTeam:"GT",runs:48,balls:42,dismissals:5,sr:114.3,label:"bunny",insight:"Rashid's leg-spin has been Rohit's nemesis — 5 dismissals and subdued SR of 114."},
   {batter:"Rohit Sharma",batterTeam:"MI",bowler:"Yuzvendra Chahal",bowlerTeam:"RR",runs:112,balls:72,dismissals:2,sr:155.6,label:"threat",insight:"Rohit has smashed Chahal at 155 SR with only 2 dismissals — clear dominance."},
-  {batter:"Rohit Sharma",batterTeam:"MI",bowler:"Kuldeep Yadav",bowlerTeam:"DC",runs:38,balls:36,dismissals:4,sr:105.6,label:"bunny",insight:"Kuldeep's variations have left Rohit clueless — 4 wickets at SR under 110."},
-  // Suryakumar Yadav
   {batter:"Suryakumar Yadav",batterTeam:"MI",bowler:"Rashid Khan",bowlerTeam:"GT",runs:78,balls:48,dismissals:3,sr:162.5,label:"threat",insight:"SKY takes on Rashid fearlessly — 162 SR despite 3 dismissals. A clash of superpowers."},
-  {batter:"Suryakumar Yadav",batterTeam:"MI",bowler:"Arshdeep Singh",bowlerTeam:"PBKS",runs:92,balls:54,dismissals:2,sr:170.4,label:"threat",insight:"SKY's 360-degree game makes him near-impossible to bowl to — 170 SR vs Arshdeep."},
-  // Travis Head
+  {batter:"Hardik Pandya",batterTeam:"MI",bowler:"Rashid Khan",bowlerTeam:"GT",runs:88,balls:52,dismissals:2,sr:169.2,label:"threat",insight:"Hardik goes after his former GT captain without mercy — 169 SR and rarely dismissed."},
   {batter:"Travis Head",batterTeam:"SRH",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:44,balls:28,dismissals:3,sr:157.1,label:"contest",insight:"Head attacks Bumrah from ball one — even Bumrah has been hit, though he's struck 3 times."},
-  {batter:"Travis Head",batterTeam:"SRH",bowler:"Kuldeep Yadav",bowlerTeam:"DC",runs:32,balls:18,dismissals:4,sr:177.8,label:"threat",insight:"Head goes after Kuldeep with brutal intent despite 4 dismissals — SR of 178 tells the story."},
   {batter:"Travis Head",batterTeam:"SRH",bowler:"Noor Ahmad",bowlerTeam:"CSK",runs:18,balls:24,dismissals:5,sr:75.0,label:"bunny",insight:"Noor Ahmad's left-arm chinaman has completely bamboozled Head — 5 wickets, SR of just 75."},
-  // Yashasvi Jaiswal
   {batter:"Yashasvi Jaiswal",batterTeam:"RR",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:58,balls:38,dismissals:3,sr:152.6,label:"contest",insight:"Jaiswal takes on Bumrah fearlessly but has been dismissed 3 times in this epic duel."},
-  {batter:"Yashasvi Jaiswal",batterTeam:"RR",bowler:"Rashid Khan",bowlerTeam:"GT",runs:46,balls:32,dismissals:4,sr:143.8,label:"contest",insight:"Rashid has taken Jaiswal out 4 times — the leg-spinner troubles the young opener."},
-  {batter:"Yashasvi Jaiswal",batterTeam:"RR",bowler:"Kuldeep Yadav",bowlerTeam:"DC",runs:36,balls:28,dismissals:4,sr:128.6,label:"bunny",insight:"Kuldeep has found Jaiswal's weakness — 4 dismissals at a subdued SR of 129."},
-  // Shreyas Iyer
-  {batter:"Shreyas Iyer",batterTeam:"PBKS",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:38,balls:34,dismissals:5,sr:111.8,label:"bunny",insight:"Bumrah has Shreyas's number — 5 dismissals and a SR of just 112. Classic setup + yorker."},
-  {batter:"Shreyas Iyer",batterTeam:"PBKS",bowler:"Rashid Khan",bowlerTeam:"GT",runs:52,balls:38,dismissals:4,sr:136.8,label:"contest",insight:"Rashid has claimed Shreyas 4 times but the PBKS skipper has still scored at a decent clip."},
-  // Rishabh Pant
+  {batter:"Shreyas Iyer",batterTeam:"PBKS",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:38,balls:34,dismissals:5,sr:111.8,label:"bunny",insight:"Bumrah has Shreyas's number — 5 dismissals and SR of just 112. Classic setup + yorker."},
   {batter:"Rishabh Pant",batterTeam:"LSG",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:88,balls:52,dismissals:3,sr:169.2,label:"threat",insight:"Pant vs Bumrah is unmissable — Pant wins the SR battle despite Bumrah picking him up 3 times."},
-  {batter:"Rishabh Pant",batterTeam:"LSG",bowler:"Rashid Khan",bowlerTeam:"GT",runs:42,balls:28,dismissals:5,sr:150.0,label:"contest",insight:"High-risk battle — Pant attacks Rashid with abandon, but has been dismissed 5 times."},
-  // Shubman Gill
   {batter:"Shubman Gill",batterTeam:"GT",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:62,balls:48,dismissals:4,sr:129.2,label:"contest",insight:"Bumrah has kept Gill quiet and dismissed him 4 times — key battle in any GT vs MI clash."},
-  {batter:"Shubman Gill",batterTeam:"GT",bowler:"Kuldeep Yadav",bowlerTeam:"DC",runs:38,balls:32,dismissals:5,sr:118.8,label:"bunny",insight:"Kuldeep has completely foxed Gill — 5 wickets and a SR of just 119. One to watch."},
+  {batter:"Shubman Gill",batterTeam:"GT",bowler:"Kuldeep Yadav",bowlerTeam:"DC",runs:38,balls:32,dismissals:5,sr:118.8,label:"bunny",insight:"Kuldeep has completely foxed Gill — 5 wickets and SR of just 119."},
   {batter:"Shubman Gill",batterTeam:"GT",bowler:"Arshdeep Singh",bowlerTeam:"PBKS",runs:92,balls:58,dismissals:2,sr:158.6,label:"threat",insight:"Gill has dominated Arshdeep — 158 SR with minimal fear of dismissal."},
-  // KL Rahul
-  {batter:"KL Rahul",batterTeam:"DC",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:48,balls:42,dismissals:5,sr:114.3,label:"bunny",insight:"Bumrah has Rahul's measure — 5 dismissals and a very low SR tell the complete story."},
-  {batter:"KL Rahul",batterTeam:"DC",bowler:"Rashid Khan",bowlerTeam:"GT",runs:68,balls:48,dismissals:3,sr:141.7,label:"contest",insight:"Rahul plays Rashid cautiously — good SR but has been dismissed 3 times."},
-  // Ruturaj Gaikwad
-  {batter:"Ruturaj Gaikwad",batterTeam:"CSK",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:56,balls:44,dismissals:4,sr:127.3,label:"contest",insight:"Bumrah has kept Ruturaj in check — 4 dismissals and subdued SR in this rivalry."},
-  {batter:"Ruturaj Gaikwad",batterTeam:"CSK",bowler:"Rashid Khan",bowlerTeam:"GT",runs:44,balls:36,dismissals:5,sr:122.2,label:"bunny",insight:"Rashid is Ruturaj's kryptonite — 5 dismissals and a SR under 125. A huge worry for CSK."},
-  {batter:"Ruturaj Gaikwad",batterTeam:"CSK",bowler:"Varun Chakaravarthy",bowlerTeam:"KKR",runs:28,balls:26,dismissals:5,sr:107.7,label:"bunny",insight:"Varun's mystery spin has completely undone Ruturaj — 5 wickets at SR of just 108."},
-  // Rinku Singh
-  {batter:"Rinku Singh",batterTeam:"KKR",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:72,balls:42,dismissals:2,sr:171.4,label:"threat",insight:"Rinku doesn't fear Bumrah — 171 SR and only 2 dismissals. That 5-sixes over isn't forgotten."},
-  // Heinrich Klaasen
-  {batter:"Heinrich Klaasen",batterTeam:"SRH",bowler:"Yuzvendra Chahal",bowlerTeam:"RR",runs:82,balls:46,dismissals:2,sr:178.3,label:"threat",insight:"Klaasen absolutely murders spin — 178 SR vs Chahal with near-zero fear."},
-  {batter:"Heinrich Klaasen",batterTeam:"SRH",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:52,balls:32,dismissals:4,sr:162.5,label:"contest",insight:"Klaasen goes hard at Bumrah but has paid with his wicket 4 times in this blockbuster duel."},
-  // Abhishek Sharma
-  {batter:"Abhishek Sharma",batterTeam:"SRH",bowler:"Kuldeep Yadav",bowlerTeam:"DC",runs:34,balls:26,dismissals:5,sr:130.8,label:"bunny",insight:"Kuldeep has cracked the code against Abhishek — 5 dismissals and a subdued strike rate."},
-  {batter:"Abhishek Sharma",batterTeam:"SRH",bowler:"Arshdeep Singh",bowlerTeam:"PBKS",runs:88,balls:48,dismissals:2,sr:183.3,label:"threat",insight:"Abhishek is devastating vs left-arm pace — 183 SR vs Arshdeep with minimal risk."},
-  // Nicholas Pooran
-  {batter:"Nicholas Pooran",batterTeam:"LSG",bowler:"Rashid Khan",bowlerTeam:"GT",runs:62,balls:34,dismissals:4,sr:182.4,label:"contest",insight:"Pooran goes for Rashid from ball one — 182 SR but dismissed 4 times in this high-stakes duel."},
-  // Jos Buttler
   {batter:"Jos Buttler",batterTeam:"GT",bowler:"Yuzvendra Chahal",bowlerTeam:"RR",runs:124,balls:72,dismissals:2,sr:172.2,label:"threat",insight:"Buttler absolutely feasts on his old teammate Chahal — 172 SR with near-zero worry."},
   {batter:"Jos Buttler",batterTeam:"GT",bowler:"Arshdeep Singh",bowlerTeam:"PBKS",runs:48,balls:34,dismissals:5,sr:141.2,label:"bunny",insight:"Arshdeep's left-arm slant has dismissed Buttler 5 times — a massive weapon for PBKS."},
-  // Phil Salt
-  {batter:"Phil Salt",batterTeam:"RCB",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:44,balls:26,dismissals:4,sr:169.2,label:"contest",insight:"Salt attacks Bumrah fearlessly — 169 SR but dismissed 4 times in this explosive duel."},
-  // Hardik Pandya
-  {batter:"Hardik Pandya",batterTeam:"MI",bowler:"Rashid Khan",bowlerTeam:"GT",runs:88,balls:52,dismissals:2,sr:169.2,label:"threat",insight:"Hardik goes after his former GT captain without mercy — 169 SR and rarely dismissed."},
-  // Sunil Narine
+  {batter:"Heinrich Klaasen",batterTeam:"SRH",bowler:"Yuzvendra Chahal",bowlerTeam:"RR",runs:82,balls:46,dismissals:2,sr:178.3,label:"threat",insight:"Klaasen absolutely murders spin — 178 SR vs Chahal with near-zero fear."},
+  {batter:"Heinrich Klaasen",batterTeam:"SRH",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:52,balls:32,dismissals:4,sr:162.5,label:"contest",insight:"Klaasen goes hard at Bumrah but has paid with his wicket 4 times."},
+  {batter:"Abhishek Sharma",batterTeam:"SRH",bowler:"Kuldeep Yadav",bowlerTeam:"DC",runs:34,balls:26,dismissals:5,sr:130.8,label:"bunny",insight:"Kuldeep has cracked the code against Abhishek — 5 dismissals and subdued SR."},
+  {batter:"Rinku Singh",batterTeam:"KKR",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:72,balls:42,dismissals:2,sr:171.4,label:"threat",insight:"Rinku doesn't fear Bumrah — 171 SR and only 2 dismissals. That 5-sixes over isn't forgotten."},
   {batter:"Sunil Narine",batterTeam:"KKR",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:56,balls:28,dismissals:3,sr:200.0,label:"threat",insight:"Narine doesn't care who's bowling — 200 SR vs Bumrah is outrageous pinch-hitting."},
+  {batter:"Ruturaj Gaikwad",batterTeam:"CSK",bowler:"Rashid Khan",bowlerTeam:"GT",runs:44,balls:36,dismissals:5,sr:122.2,label:"bunny",insight:"Rashid is Ruturaj's kryptonite — 5 dismissals and SR under 125."},
+  {batter:"KL Rahul",batterTeam:"DC",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:48,balls:42,dismissals:5,sr:114.3,label:"bunny",insight:"Bumrah has Rahul's measure — 5 dismissals and a very low SR tell the complete story."},
+  {batter:"Phil Salt",batterTeam:"RCB",bowler:"Jasprit Bumrah",bowlerTeam:"MI",runs:44,balls:26,dismissals:4,sr:169.2,label:"contest",insight:"Salt attacks Bumrah fearlessly — 169 SR but dismissed 4 times in this explosive duel."},
+  {batter:"Nicholas Pooran",batterTeam:"LSG",bowler:"Rashid Khan",bowlerTeam:"GT",runs:62,balls:34,dismissals:4,sr:182.4,label:"contest",insight:"Pooran goes for Rashid from ball one — 182 SR but dismissed 4 times."},
+  {batter:"Yashasvi Jaiswal",batterTeam:"RR",bowler:"Rashid Khan",bowlerTeam:"GT",runs:46,balls:32,dismissals:4,sr:143.8,label:"contest",insight:"Rashid has taken Jaiswal out 4 times — the leg-spinner troubles the young opener."},
 ];
 
-function getBattlesForMatchup(teamA, teamB){
-  return BATTLES.filter(b =>
-    (b.batterTeam===teamA && b.bowlerTeam===teamB) ||
-    (b.batterTeam===teamB && b.bowlerTeam===teamA)
-  );
+function getBattlesForMatchup(teamA,teamB){
+  return BATTLES.filter(b=>(b.batterTeam===teamA&&b.bowlerTeam===teamB)||(b.batterTeam===teamB&&b.bowlerTeam===teamA));
 }
 
 function renderBattles(){
-  const battles = getBattlesForMatchup(state.teamA, state.teamB);
-  const section = document.getElementById('battlesSection');
-  const grid = document.getElementById('battlesGrid');
-  const note = document.getElementById('battlesNote');
-  if(!battles.length){
-    section.style.display='none';
-    return;
-  }
+  const allBattles=getBattlesForMatchup(state.teamA,state.teamB);
+  const battles=allBattles.filter(b=>{
+    const batterSide=b.batterTeam===state.teamA?'A':'B';
+    const bowlerSide=b.bowlerTeam===state.teamA?'A':'B';
+    return !absentPlayers[batterSide].has(b.batter) && !absentPlayers[bowlerSide].has(b.bowler);
+  });
+
+  const section=document.getElementById('battlesSection');
+  const grid=document.getElementById('battlesGrid');
+  const note=document.getElementById('battlesNote');
+  if(!battles.length){section.style.display='none';return;}
   section.style.display='block';
-  // Sort: threats first, then bunnies, then contests
   const order={threat:0,bunny:1,contest:2};
   const sorted=[...battles].sort((a,b)=>order[a.label]-order[b.label]);
   grid.innerHTML=sorted.map(b=>{
-    const isBatterA = b.batterTeam===state.teamA;
-    const batterColor = isBatterA?'var(--gold)':'var(--teal)';
-    const bowlerColor = isBatterA?'var(--teal)':'var(--gold)';
-    const badgeClass = b.label==='threat'?'badge-threat':b.label==='bunny'?'badge-bunny':'badge-contest';
-    const badgeIcon = b.label==='threat'?'⚡ THREAT':b.label==='bunny'?'🐇 BUNNY':'⚔ CONTEST';
-    const avgStr = b.dismissals>0?(b.runs/b.dismissals).toFixed(1):'∞';
-    const srClass = b.label==='bunny'?'highlight':b.label==='threat'?'good':'neutral';
-    const wktClass = b.label==='bunny'?'highlight':b.label==='threat'?'good':'neutral';
-    return `<div class="battle-card ${b.label}">
+    const isBatterA=b.batterTeam===state.teamA;
+    const batterColor=isBatterA?'var(--gold)':'var(--teal)';
+    const bowlerColor=isBatterA?'var(--teal)':'var(--gold)';
+    const badgeClass=b.label==='threat'?'badge-threat':b.label==='bunny'?'badge-bunny':'badge-contest';
+    const badgeIcon=b.label==='threat'?'⚡ THREAT':b.label==='bunny'?'🐇 BUNNY':'⚔ CONTEST';
+    const srClass=b.label==='bunny'?'highlight':b.label==='threat'?'good':'neutral';
+    const wktClass=b.label==='bunny'?'highlight':b.label==='threat'?'good':'neutral';
+    return`<div class="battle-card ${b.label}">
       <div><span class="battle-type-badge ${badgeClass}">${badgeIcon}</span></div>
       <div class="battle-matchup">
         <span class="battle-player batter" style="color:${batterColor}">${b.batter}</span>
         <span class="battle-vs">vs</span>
         <span class="battle-player bowler" style="color:${bowlerColor}">${b.bowler}</span>
       </div>
-      <div style="font-size:10px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;margin-bottom:8px;letter-spacing:.08em">
-        ${b.batterTeam} <span style="color:var(--text-muted)">→</span> ${b.bowlerTeam}
-      </div>
+      <div style="font-size:10px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;margin-bottom:8px;letter-spacing:.08em">${b.batterTeam} → ${b.bowlerTeam}</div>
       <div class="battle-stats">
-        <div class="bstat ${srClass}">
-          <div class="bstat-val">${b.sr}</div>
-          <div class="bstat-lbl">Str Rate</div>
-        </div>
-        <div class="bstat neutral">
-          <div class="bstat-val">${b.runs}</div>
-          <div class="bstat-lbl">Runs</div>
-        </div>
-        <div class="bstat neutral">
-          <div class="bstat-val">${b.balls}</div>
-          <div class="bstat-lbl">Balls</div>
-        </div>
-        <div class="bstat ${wktClass}">
-          <div class="bstat-val">${b.dismissals}</div>
-          <div class="bstat-lbl">Wkts</div>
-        </div>
+        <div class="bstat ${srClass}"><div class="bstat-val">${b.sr}</div><div class="bstat-lbl">Str Rate</div></div>
+        <div class="bstat neutral"><div class="bstat-val">${b.runs}</div><div class="bstat-lbl">Runs</div></div>
+        <div class="bstat neutral"><div class="bstat-val">${b.balls}</div><div class="bstat-lbl">Balls</div></div>
+        <div class="bstat ${wktClass}"><div class="bstat-val">${b.dismissals}</div><div class="bstat-lbl">Wkts</div></div>
       </div>
       <div class="battle-insight">${b.insight}</div>
     </div>`;
   }).join('');
-  note.textContent=`Showing ${sorted.length} key battles between ${state.teamA} and ${state.teamB} players · Stats from IPL 2021–2026`;
+  note.textContent=`${sorted.length} key battles · ${allBattles.length-sorted.length > 0 ? (allBattles.length-sorted.length)+' hidden (absent players)' : 'All players available'} · Stats IPL 2021–2026`;
 }
 
 window.addEventListener('load',()=>{renderTeamSelectors();initVenues();updateChase();});
-
 </script>
 </body>
 </html>
